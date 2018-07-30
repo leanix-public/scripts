@@ -2,8 +2,8 @@ import json
 import requests 
 import pandas as pd
 
-api_token = '<APITOKEN>'
-auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' cd
+api_token = '<INSERT API TOKEN>'
+auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
 request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql' 
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
