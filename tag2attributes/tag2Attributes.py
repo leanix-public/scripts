@@ -3,9 +3,10 @@ import requests
 import pandas as pd
 import math
 
-api_token = '<API-TOKEN>'
+
+api_token = '<API Token>'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql' 
+request_url = 'https://app.leanix.net/services/pathfinder/v1' 
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),
@@ -19,7 +20,7 @@ header = {'Authorization': auth_header}
 def call(query):
   data = {"query" : query}
   json_data = json.dumps(data)
-  response = requests.post(url=request_url, headers=header, data=json_data)
+  response = requests.post(url=request_url+ '/graphql', headers=header, data=json_data)
   response.raise_for_status()
   return response.json()
 
@@ -46,7 +47,7 @@ df = pd.read_csv('mapping.csv', sep=';')
 apps = getAllApps()
 for appNode in apps:
 
-    tags = map(lambda x: x['id'], appNode['node']['tags'])
+    tags = list(map(lambda x: x['id'], appNode['node']['tags']))
     
     patches = []
     multiSelects = {}
@@ -78,6 +79,6 @@ for appNode in apps:
           }
         }
       """ % (appNode['node']['id'], ",".join(patches))
-    print query
+    print (query)
     response = call(query)
-    print response
+    print (response)
