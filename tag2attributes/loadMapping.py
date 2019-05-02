@@ -5,7 +5,7 @@ import pandas as pd
 import itertools
 import csv
 
-api_token = '<API-TOKEN>'
+api_token = 'API-Token'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
 request_url = 'https://app.leanix.net/services/pathfinder/v1' 
 
@@ -19,10 +19,13 @@ header = {'Authorization': auth_header}
 
 # General function to call GraphQL given a query
 def callGraphQL(query):
+  print("callGraphQl")
   data = {"query" : query}
   json_data = json.dumps(data)
+  print("request")
   response = requests.post(url=request_url + '/graphql', headers=header, data=json_data)
   response.raise_for_status()
+  print("requested")
   return response.json()
 
 def call(url):
@@ -32,6 +35,7 @@ def call(url):
 
 
 def getTags():
+  print("getTags Start")
   query = """
   {
     allTags {
@@ -50,6 +54,7 @@ def getTags():
   }
   """
   response = callGraphQL(query)
+  print(response)
   tags = []
   for tag in response['data']['allTags']['edges']:
     node = tag['node']
