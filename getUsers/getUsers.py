@@ -2,7 +2,7 @@ import json
 import requests 
 import pandas as pd
 
-api_token = '<TOKEN>'
+api_token = 'tUQBFug5WtuHufAujAg8YFP8NA4sq3FRNEyfMrba'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
 request_url = 'https://svc.leanix.net/services/mtm/v1/workspaces/<WORKSPACE>/users?page=0' 
 
@@ -21,5 +21,5 @@ def call():
   return response.json()
 
 for user in call()['data']:
-  print user['id'] + " " + user['userName']
+  print(user['id'] + " " + user['userName'])
 
