@@ -69,11 +69,11 @@ def getAttributes():
 # Start of the main program
 
 
-with open('mapping.csv', 'wb') as csvfile:
+with open('mapping.csv', 'w') as csvfile:
   writer = csv.writer(csvfile, delimiter=';')
   writer.writerow(['Tag Group', 'Tag', 'Mode', 'Tag ID', 'Attribute', 'Value', 'Type'])
    
-  for t, a in itertools.izip_longest(getTags(),getAttributes()):
+  for t, a in itertools.zip_longest(getTags(),getAttributes()):
     if (t and a):
       writer.writerow([t['tagGroup'], t['name'], t['mode'], t['id'], a['name'], a['value'], a['type']])
     elif (t):

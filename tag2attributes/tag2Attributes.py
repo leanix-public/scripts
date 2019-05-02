@@ -15,11 +15,12 @@ access_token = response.json()['access_token']
 auth_header = 'Bearer ' + access_token
 header = {'Authorization': auth_header}
 
+
 # General function to call GraphQL given a query
 def call(query):
   data = {"query" : query}
   json_data = json.dumps(data)
-  response = requests.post(url=request_url, headers=header, data=json_data)
+  response = requests.post(url=request_url + '/graphql', headers=header, data=json_data)
   response.raise_for_status()
   return response.json()
 
@@ -46,7 +47,7 @@ df = pd.read_csv('mapping.csv', sep=';')
 apps = getAllApps()
 for appNode in apps:
 
-    tags = map(lambda x: x['id'], appNode['node']['tags'])
+    tags = list(map(lambda x: x['id'], appNode['node']['tags']))
     
     patches = []
     multiSelects = {}
@@ -78,6 +79,6 @@ for appNode in apps:
           }
         }
       """ % (appNode['node']['id'], ",".join(patches))
-    print query
+    print (query)
     response = call(query)
-    print response
+    print (response)
