@@ -1,0 +1,25 @@
+Tag Group;Tag;Mode;Tag ID;Attribute;Value;Type
+Application Type;Appliance;SINGLE;aa815146-cd94-4b91-a61f-bad49f37b502;applicationType;appliance;SINGLE_SELECT
+Application Type;Application;SINGLE;e336ad72-3c9a-4052-a4eb-8fcf0c87ea6d;applicationType;application;SINGLE_SELECT
+Application Type;Application Grouping;SINGLE;77bea24d-bc7b-4b68-a2f3-2bb3d2e212dc;applicationType;applicationGrouping;SINGLE_SELECT
+Application Type;Desktop Software;SINGLE;a6b385f7-6ded-4606-b076-101424538097;applicationType;desktopSoftware;SINGLE_SELECT
+Application Type;External Partner Appl.;SINGLE;568bfd4d-95b6-49e8-b081-7bbf33c20e8a;applicationType;externalPartnerApp;SINGLE_SELECT
+Application Type;Mobile Application;SINGLE;db99f305-994a-4f88-aa07-1349898d0c9f;applicationType;mobileApp;SINGLE_SELECT
+Platform;AEM;SINGLE;384d6dfc-cb7c-4e70-bfae-51e669871301;plattform;aem;SINGLE_SELECT
+Platform;ATLASSIAN;SINGLE;bb0121cd-43b2-44af-8bef-c238a97f3dc4;plattform;atlassian;SINGLE_SELECT
+Platform;DOMINO;SINGLE;53f8e076-e897-44ce-b0e9-6de6d2c8e085;plattform;domino;SINGLE_SELECT
+Platform;ECENTER;SINGLE;2795113e-1bd6-4469-a692-5e722cc308f8;plattform;ecenter;SINGLE_SELECT
+Platform;EDWH;SINGLE;747f73b2-9854-438c-b627-159908df2e68;plattform;edwh;SINGLE_SELECT
+Platform;ePlatform;SINGLE;7ef890c3-a857-4bc2-bf4b-50bb6dec2565;plattform;ePlattform;SINGLE_SELECT
+Platform;FHEEL;SINGLE;98f3dd46-3f7e-4fc7-9a0b-003cf5e3137c;plattform;fheel;SINGLE_SELECT
+Platform;HCP;SINGLE;46a1a08f-bd7b-41ff-8339-ae1bec420ec3;plattform;hcp;SINGLE_SELECT
+Platform;HEAP;SINGLE;1ddeaea9-b83f-4d65-8ac8-73b7f1e81aaa;plattform;heap;SINGLE_SELECT
+Platform;IBM HOST;SINGLE;0993db83-68e3-43f7-a658-ffc4f2b1f4a7;plattform;imbHost;SINGLE_SELECT
+Platform;NEAF;SINGLE;ad4236dd-cc36-42e1-931b-a4886724c416;plattform;neaf;SINGLE_SELECT
+Platform;PowerBuilder;SINGLE;9f7db13e-100d-4f37-b960-ede66f404c9b;plattform;powerBuilder;SINGLE_SELECT
+Platform;SAP BW;SINGLE;f6358ded-10f9-4a56-9ed2-5afa89184eb8;plattform;sapBW;SINGLE_SELECT
+Platform;SAP CRM;SINGLE;02d20d73-83a6-4ac8-9b4e-b5ed8197c238;plattform;sapCRM;SINGLE_SELECT
+Platform;SAP ERP;SINGLE;f7109439-890d-4a76-b184-5757b5b6f28b;plattform;sapERP;SINGLE_SELECT
+Platform;UNISYS HOST;SINGLE;5e138f3b-7c9d-4f7e-957c-9e2ca25c0590;plattform;unisysHost;SINGLE_SELECT
+Platform;UNIVERSAL;SINGLE;093bca80-5284-40fa-8b6d-00574dfa42c8;plattform;universal;SINGLE_SELECT
+Platform;WINDEV/WEBDEV;SINGLE;09951a6f-fb56-45b2-bfcb-be7d802d7889;plattform;windev;SINGLE_SELECT
