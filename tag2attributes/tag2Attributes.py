@@ -4,9 +4,9 @@ import pandas as pd
 import math
 
 
-api_token = 'CfPdGCnw2sX29ckYXPQC9Bgk7bDuAPbnxTc2QEPP'
-auth_url = 'https://helvetia.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://helvetia.leanix.net/services/pathfinder/v1' 
+api_token = '<API Token>'
+auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
+request_url = 'https://app.leanix.net/services/pathfinder/v1' 
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),

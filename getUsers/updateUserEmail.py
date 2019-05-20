@@ -2,7 +2,7 @@ import json
 import requests 
 import pandas as pd
 
-api_token = 'JgkJgW5WePSRRGqwE9uVdbQ2KUpGCJaFhRaK5b5S'
+api_token = '<API Token>'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
 request_url = 'https://svc.leanix.net/services/mtm/v1/workspaces/3eb07b2e-7ae1-4388-8a17-618ef89388a8/users?page=0' 
 putrequest = 'https://svc.leanix.net/services/mtm/v1/users/'

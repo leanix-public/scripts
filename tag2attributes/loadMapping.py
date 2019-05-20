@@ -5,9 +5,9 @@ import pandas as pd
 import itertools
 import csv
 
-api_token = 'CfPdGCnw2sX29ckYXPQC9Bgk7bDuAPbnxTc2QEPP'
-auth_url = 'https://helvetia.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://helvetia.leanix.net/services/pathfinder/v1' 
+api_token = '<API Token>'
+auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
+request_url = 'https://app.leanix.net/services/pathfinder/v1' 
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),
@@ -19,13 +19,13 @@ header = {'Authorization': auth_header}
 
 # General function to call GraphQL given a query
 def callGraphQL(query):
-  print("callGraphQl")
+  #print("callGraphQl")
   data = {"query" : query}
   json_data = json.dumps(data)
-  print("request")
+  #print("request")
   response = requests.post(url=request_url + '/graphql', headers=header, data=json_data)
   response.raise_for_status()
-  print("requested")
+  #print("requested")
   return response.json()
 
 def call(url):
@@ -35,7 +35,7 @@ def call(url):
 
 
 def getTags():
-  print("getTags Start")
+  #print("getTags Start")
   query = """
   {
     allTags {
@@ -54,7 +54,7 @@ def getTags():
   }
   """
   response = callGraphQL(query)
-  print(response)
+  #print(response)
   tags = []
   for tag in response['data']['allTags']['edges']:
     node = tag['node']
@@ -72,7 +72,6 @@ def getAttributes():
   return sorted(attributes, key=lambda k: "%s %s" % (k['name'], k['value']))
 
 # Start of the main program
-
 
 with open('mapping.csv', 'w') as csvfile:
   writer = csv.writer(csvfile, delimiter=';')
