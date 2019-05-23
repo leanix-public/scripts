@@ -18,7 +18,8 @@ auth_header = 'Bearer ' + access_token
 header = {'Authorization': auth_header, 'Content-Type': 'application/json'}
 
 # General function to call GraphQL given a query
-def call():
+def call(email):
+  request_url = url + '/workspaces/' + ws +'/users?email=office.chwdemo@meshlab.de'
   response = requests.get(url=request_url, headers=header)
   response.raise_for_status()
   return response.json()
@@ -33,22 +34,34 @@ def updateUser(id, user):
   response.raise_for_status()
   return response.json()
 
+df = pd.read_csv('LeanIXUserUpdate.csv', sep=';')
+print(df)
 
-for user in call()['data']:
-  workspaces = []
-  for link in user['links']:
-    if link['rel'] == 'permissions':
-      permissions = getPermission(link['href'])
-      for permission in permissions['data']:
-        if (permission['workspaceId'] != ws and permission['active']):
-          workspaces.append(permission['workspaceId'])
-  if (len(workspaces) > 0):
-    print ("ignored " + user['email'])
-    continue
+# for user in df.loc[:,'oldEmail']:
+#   call(user)['data']
+#     print(user['email'])
+
+
+# for user in call()['data']:
+#   if (df.)
+
+
+# https://app.leanix.net/services/mtm/v1/users?email=office.chwdemo%40meshlab.de&page=1&size=30
+
+#   workspaces = []
+#   for link in user['links']:
+#     if link['rel'] == 'permissions':
+#       permissions = getPermission(link['href'])
+#       for permission in permissions['data']:
+#         if (permission['workspaceId'] != ws and permission['active']):
+#           workspaces.append(permission['workspaceId'])
+#   if (len(workspaces) > 0):
+#     print ("ignored " + user['email'])
+#     continue
   
-  if user['account']['id'] != account:
-    print (user['id'])
-    user['account']['id'] = account  
-    #updateUser(user['id'], user) 
-    print (user) 
+#   if user['account']['id'] != account:
+#     print (user['id'])
+#     user['account']['id'] = account  
+#     #updateUser(user['id'], user) 
+#     print (user) 
 

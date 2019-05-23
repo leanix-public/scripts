@@ -22,10 +22,14 @@ def call(query):
   return response.json()
 
 
-def getAllSubscriptions(user):
+def getSubscriptionPage(endCursor):
   query = """
   {
-    allFactSheets {
+    allFactSheets(first: 10000, after: "%s") {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           id
@@ -47,14 +51,28 @@ def getAllSubscriptions(user):
         }
       }
     }
-  }
-  """
+  } 
+  """ % (endCursor)
   response = call(query)
+  return response
+
+def extractSubscriptions(response,user):
   subscriptions = []
   for fs in response['data']['allFactSheets']['edges']:
     for subscription in fs['node']['subscriptions']['edges']:
       if subscription['node']['user']['email'] == user:
         subscriptions.append({'id': subscription['node']['id'], 'fsId': fs['node']['id'], 'type': subscription['node']['type']})
+  return subscriptions
+
+def getAllSubscriptions(user):
+  subscriptions = []
+  first = getSubscriptionPage("")
+  subscriptions.append(extractSubscriptions(first,user))
+  while first['data']['allFactSheets']['pageInfo']['hasNextPage']:
+    endCursor = first['data']['allFactSheets']['pageInfo']['endCursor']
+    first = getSubscriptionPage(endCursor)
+    subscriptions.append(extractSubscriptions(first,user))
+  print(len(subscriptions))
   return subscriptions
 
 def getRoles(fsId, user):
@@ -108,15 +126,22 @@ def deleteSubscription(id, fsId) :
   response = call(query)
   print(response)
 
-# Start of the main program
-oldUser = 'srv.dordemo@meshlab.de'
-newUser = 'cio.dordemo@meshlab.de'
-for subscription in getAllSubscriptions(oldUser):
-
+def updateSubscription(subscription, oldUser, newUser):
   roles = []
   for role in getRoles(subscription['fsId'], oldUser):
     roles.append("{id: \"" + role['id'] + "\", comment: \"" + (role['comment'] if role['comment'] != None else "") + "\"}")
   createSubscription(subscription['fsId'], newUser, subscription['type'],  ",".join(roles))
 
   deleteSubscription(subscription['id'], subscription['fsId'])
+
+# Start of the main program
+oldUser = 'srv.FrancoisKrugerDemo@meshlab.de'
+newUser = 'cio.FrancoisKrugerDemo@meshlab.de'
+
+for subscription in getAllSubscriptions(oldUser):
+  if isinstance(subscription, list):
+    for subscr in subscription:
+      updateSubscription(subscr, oldUser, newUser)
+  else:
+    updateSubscription(subscription, oldUser, newUser) 
 
