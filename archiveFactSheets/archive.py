@@ -26,7 +26,7 @@ def call(query):
 def deleteSubscription(id):
   query = """
 mutation {
-      updateFactSheet(id: "%s", comment: "Activate", patches: {op: replace, path: \"/status\", value: \"ACTIVE\"}, validateOnly: false) {
+      updateFactSheet(id: "%s", comment: "Archive", patches: {op: replace, path: \"/status\", value: \"ARCHIVED\"}, validateOnly: false) {
         factSheet {
           id
         }
