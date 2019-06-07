@@ -58,7 +58,7 @@ def callPost(request_url, header, data):
   return response.json()
 
 def getApiToken():
-  with open('access.json') as json_file:  
+  with open('../access.json') as json_file:  
     data = json.load(json_file)
     return data['apitoken']
 

@@ -1,13 +1,1 @@
 Tag Group;Tag;Mode;Tag ID;Attribute;Value;Type
-Failover Capability;Across data centers;SINGLE;bcd544f6-bad8-4285-b88c-e0b8aa295667;businessCriticality;administrativeService;SINGLE_SELECT
-Failover Capability;None;SINGLE;43228f42-7a5a-4820-af9f-26fe6870e1da;businessCriticality;businessCritical;SINGLE_SELECT
-Failover Capability;Same data center;SINGLE;5958e237-b252-4dfd-8ec4-f3d5ade28344;businessCriticality;businessOperational;SINGLE_SELECT
-Rationalization Opportunity;Create;SINGLE;bc699312-22c0-4f0e-9cd0-38a2033ee327;businessCriticality;missionCritical;SINGLE_SELECT
-Rationalization Opportunity;Decommission;SINGLE;981edb22-b584-4bd5-93e2-d9bc8c38a90b;functionalSuitability;appropriate;SINGLE_SELECT
-Rationalization Opportunity;Fold in;SINGLE;0cf630d7-7b49-4ca0-9608-0e71c7d0c9dc;functionalSuitability;insufficient;SINGLE_SELECT
-Rationalization Opportunity;Local;SINGLE;fc3a3230-8029-4a81-ad99-49990efd7a58;functionalSuitability;perfect;SINGLE_SELECT
-SCTnC Designation;Core;SINGLE;23780c8d-b2b8-485b-bad8-b569c4bb48e3;functionalSuitability;unreasonable;SINGLE_SELECT
-SCTnC Designation;nonCore;SINGLE;dbe8ec23-3c79-4c69-95d4-3f92f9d15467;technicalSuitability;adequate;SINGLE_SELECT
-SCTnC Designation;Strategic;SINGLE;5da02670-858e-485e-ac50-014de0836b64;technicalSuitability;fullyAppropriate;SINGLE_SELECT
-SCTnC Designation;Transactional;SINGLE;f85548d9-b4ea-4d64-ac04-94a1f33dba50;technicalSuitability;inappropriate;SINGLE_SELECT
-;;;;technicalSuitability;unreasonable;SINGLE_SELECT
