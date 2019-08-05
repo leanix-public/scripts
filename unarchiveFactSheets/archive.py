@@ -23,10 +23,10 @@ def call(query):
   return response.json()
 
 # Delete the subscription
-def archiveFactSheets(id):
+def unarchiveFactSheets(id):
   query = """
 mutation {
-      updateFactSheet(id: "%s", comment: "Archive", patches: {op: replace, path: \"/status\", value: \"ARCHIVED\"}, validateOnly: false) {
+      updateFactSheet(id: "%s", comment: "Activate", patches: {op: replace, path: \"/status\", value: \"ACTIVE\"}, validateOnly: false) {
         factSheet {
           id
         }
@@ -42,4 +42,4 @@ mutation {
 df = pd.read_csv('Book1.csv',sep=';')
   
 for index, row in df.iterrows():
-  archiveFactSheets(row['id'])
+  unarchiveFactSheets(row['id'])
