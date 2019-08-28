@@ -53,15 +53,15 @@ def setQualitySeal(app) :
       }
     }
   """ % (app)
-  print "Set seal for: " + app
+  print ("Set seal for: ") + app
   response = call(query)
-  print response
+  print (response)
 
 # Start of the main program
 
 # 1. Get the existing factsheets from LeanIX
 apps = getAllApps()
-print apps
+print (apps)
 
 # 2. Update the quality sealfor each row
 for app in apps:
