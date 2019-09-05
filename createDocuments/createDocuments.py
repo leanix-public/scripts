@@ -2,7 +2,7 @@ import json
 import requests 
 import pandas as pd
 
-api_token = '<TOKEN>'
+api_token = '<API-Token>'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
 request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql' 
 
@@ -23,21 +23,21 @@ def call(query):
   return response.json()
 
 # Delete the document
-def createDocument(id, name, url):
+def createDocument(id, name, url, description):
   query = """
     mutation {
-      createDocument(factSheetId: "%s", name: "%s", url: "%s", description: "", validateOnly: false) {
+      createDocument(factSheetId: "%s", name: "%s", url: "%s", description: "%s", validateOnly: false) {
         id
       }
     } 
-  """ % (id, name, url)
-  print "create document " + id
+  """ % (id, name, url, description)
+  print ("create document " + id)
   response = call(query)
-  print response
+  print (response)
 
 # Start of the main program
 
 df = pd.read_csv('Book1.csv',sep=';')
   
 for index, row in df.iterrows():
-  createDocument(row['id'], row['name'], row['url'])
+  createDocument(row['id'], row['name'], row['url'], row['description'])
