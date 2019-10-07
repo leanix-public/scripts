@@ -37,7 +37,7 @@ def createDocument(id, name, url, description):
 
 # Start of the main program
 
-df = pd.read_csv('Book1.csv',sep=';')
+df = pd.read_csv('Book1.csv',sep=';').fillna('')
   
 for index, row in df.iterrows():
   createDocument(row['id'], row['name'], row['url'], row['description'])
