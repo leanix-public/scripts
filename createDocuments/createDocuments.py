@@ -26,18 +26,18 @@ def call(query):
 def createDocument(id, name, url):
   query = """
     mutation {
-      createDocument(factSheetId: "%s", name: "%s", url: "%s", description: "", validateOnly: false) {
+      createDocument(factSheetId: "%s", name: "%s", url: "%s", description: "%s", validateOnly: false) {
         id
       }
     } 
   """ % (id, name, url)
-  print "create document " + id
+  print("create document ") + id
   response = call(query)
-  print response
+  print(response)
 
 # Start of the main program
 
 df = pd.read_csv('Book1.csv',sep=';')
   
 for index, row in df.iterrows():
-  createDocument(row['id'], row['name'], row['url'])
+  createDocument(row['id'], row['name'], row['url'], row['description'])
