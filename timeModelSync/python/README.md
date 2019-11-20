@@ -21,8 +21,10 @@ lxpy - LeanIX python client that is shipped in this project. To install run:
 ##Usage
 To execute the script lookup the your host (e.g. app.leanix.net) and get and API-token.
 Create local environment variables:
-```EXPORT BASE_URL='<your host>'
-EXPORT API_TOKEN='<your API token>'```
+```
+EXPORT BASE_URL='<your host>'
+EXPORT API_TOKEN='<your API token>'
+```
 
 Run:
 ```python3 timeTagging.py```
