@@ -1,4 +1,4 @@
-# Azure function to Update Time Tag on Application automatically
+# Azure function to update Time Tag values on Application factsheets automatically
 This projects provides they setup for an Azure Function App that listenes to LeanIX' FACT_SHEET_UPDATED events and updates the Time Tag on the factsheet according to the values of Functional Fit and Technical Fit. 
 
 For an overview of the general functionality of the code please refer to: ../python/README.md
