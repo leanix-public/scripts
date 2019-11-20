@@ -10,6 +10,20 @@ config = lxpy.ClientConfiguration(
 
 pathfinder = lxpy.Pathfinder(config)
 
+def getTimeTags():
+    query = queries.getTimeTagsQuery()
+    status, result = pathfinder.post("/graphql",query)
+    if not (status == 200 and result['errors'] is None):
+        print("Error in mapping the Time Model tags.")
+        exit(9)
+    tagMapping = {}
+    for tagNode in result['data']['allTags']['edges']:
+        tag = tagNode['node']
+        tagMapping[tag['name']]=tag['id']
+    return tagMapping
+
+TIME_MAPPING = getTimeTags()
+
 # This maps the various functional suitability fields to specific values
 FUNCTIONAL_SUITABILITY_MAPPING = {"inappropriate": 1,
                                   "unreasonable": 2,
@@ -22,33 +36,25 @@ TECHNICAL_SUITABILITY_MAPPING = {"unreasonable": 1,
                                  "appropriate": 3,
                                  "perfect": 4}
 
-TIME_MAPPING = {
-    "tolerate": "a69e7185-b7a4-438e-b3bb-cf54389444e5",
-    "invest": "320c2f83-e1ec-4a1d-ad0e-06446490c66d",
-    "migrate": "ee157b14-7710-4536-8360-ed9ff4acbd66",
-    "eliminate": "08834c44-c123-45f2-88cb-ace29de0c894"
-}
-
-
 """
 Logic:
-1) Applications with Functional Fit 3/4 and Technical Fit 3/4 should be tagged with Invest
-2) Applications with Functional Fit 1/2 and Technical Fit 3/4 should be tagged with Tolerate
-3) Applications with Functional Fit 1/2 and Technical Fit 1/2 should be tagged with Eliminate
-4) Applications with Functional Fit 3/4 and Technical Fit 1/2 should be tagged with Migrate
+1) Applications with Functional Fit 1/2 and Technical Fit 3/4 should be tagged with Tolerate
+2) Applications with Functional Fit 3/4 and Technical Fit 3/4 should be tagged with Invest
+3) Applications with Functional Fit 3/4 and Technical Fit 1/2 should be tagged with Migrate
+4) Applications with Functional Fit 1/2 and Technical Fit 1/2 should be tagged with Eliminate
 """
 ## Function calculates the required Time tag, depending on the functionalFit and technicalFit
 def calculateTimeTag(functionalSuitability, technicalSuitability):
     if functionalSuitability is None or technicalSuitability is None:
         return None
-    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
-        return TIME_MAPPING["invest"]
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
-        return TIME_MAPPING["tolerate"]
-    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
-        return TIME_MAPPING["eliminate"]
+        return TIME_MAPPING["Tolerate"]
+    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
+        return TIME_MAPPING["Invest"]
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
-        return TIME_MAPPING["migrate"]
+        return TIME_MAPPING["Migrate"]
+    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
+        return TIME_MAPPING["Eliminate"]
 
 ## Function to filter out all existing tags that are not part of the Time tag-group
 def getTagPatchesValues(tags, timeTag):
@@ -68,6 +74,7 @@ def getAllApplications():
 def updateApplication(id, rev, tagPatches):
     query = queries.getUpdateTagQuery(id,rev,tagPatches)
     return pathfinder.post("/graphql", query)
+
 
 ## Start of Main Application
 status, allApplications = getAllApplications()

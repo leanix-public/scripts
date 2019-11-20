@@ -34,3 +34,21 @@ def getUpdateTagQuery(id, rev, tagPatches):
     }
     }
     return query
+
+
+def getTimeTagsQuery():
+    query = {"query":"""
+    {
+    allTags(filter:{tagGroupName:"Time Model"}){
+        edges{
+            node{
+                name
+                id
+            }
+        }
+    }
+    }
+    """}
+    return query
+
+    
