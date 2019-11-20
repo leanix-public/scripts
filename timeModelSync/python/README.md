@@ -27,4 +27,6 @@ EXPORT API_TOKEN='<your API token>'
 ```
 
 Run:
-```python3 timeTagging.py```
+```
+python3 timeTagging.py
+```
