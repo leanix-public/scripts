@@ -39,12 +39,7 @@ TECHNICAL_SUITABILITY_MAPPING = {"unreasonable": 1,
                                  "appropriate": 3,
                                  "perfect": 4}
 
-TIME_MAPPING = {
-    "tolerate": "a69e7185-b7a4-438e-b3bb-cf54389444e5",
-    "invest": "320c2f83-e1ec-4a1d-ad0e-06446490c66d",
-    "migrate": "ee157b14-7710-4536-8360-ed9ff4acbd66",
-    "eliminate": "08834c44-c123-45f2-88cb-ace29de0c894"
-}
+TIME_MAPPING = environ['TAG_MAPPING']
 
 def calculateTimeTag(functionalSuitability, technicalSuitability):
     if functionalSuitability is None or technicalSuitability is None:
