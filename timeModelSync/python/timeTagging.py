@@ -38,20 +38,20 @@ TECHNICAL_SUITABILITY_MAPPING = {"unreasonable": 1,
 
 """
 Logic:
-1) Applications with Functional Fit 1/2 and Technical Fit 3/4 should be tagged with Tolerate
+1) Applications with Functional Fit 1/2 and Technical Fit 3/4 should be tagged with Migrate
 2) Applications with Functional Fit 3/4 and Technical Fit 3/4 should be tagged with Invest
-3) Applications with Functional Fit 3/4 and Technical Fit 1/2 should be tagged with Migrate
+3) Applications with Functional Fit 3/4 and Technical Fit 1/2 should be tagged with Tolerate
 4) Applications with Functional Fit 1/2 and Technical Fit 1/2 should be tagged with Eliminate
 """
 ## Function calculates the required Time tag, depending on the functionalFit and technicalFit
 def calculateTimeTag(functionalSuitability, technicalSuitability):
     if functionalSuitability is None or technicalSuitability is None:
         return None
-    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
+    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
         return TIME_MAPPING["Tolerate"]
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
         return TIME_MAPPING["Invest"]
-    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
+    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
         return TIME_MAPPING["Migrate"]
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
         return TIME_MAPPING["Eliminate"]
