@@ -47,10 +47,10 @@ def calculateTimeTag(functionalSuitability, technicalSuitability):
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
         return TIME_MAPPING["invest"]
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
-        return TIME_MAPPING["tolerate"]
-    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
         return TIME_MAPPING["eliminate"]
-    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitabiliçty] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
+    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
+        return TIME_MAPPING["tolerate"]
+    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
         return TIME_MAPPING["migrate"]
 
 def getTagPatchesValues(tags, timeTag):

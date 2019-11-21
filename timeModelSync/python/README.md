@@ -4,10 +4,10 @@ This script sets Tags of the TIME Taggroup (Tolerate, Invest, Migrate, Eliminate
 
 ## Mapping 
 The following mapping is used.
-Tolerate: Functional Fit is Insufficient or lower. Technical Fit is Adequate or higher. 
-Invest: Functional Fit is Appropriate or higher. Technical Fit is Adequate or higher. 
-Migrate: Functional Fit is Appropriate or higher. Technical Fit is Unreasonable or lower. 
-Eliminate: Functional Fit is Insufficient or lower. Technical Fit is Unreasonable or lower.
+* Tolerate: Functional Fit is Insufficient or lower. Technical Fit is Adequate or higher. 
+* Invest: Functional Fit is Appropriate or higher. Technical Fit is Adequate or higher. 
+* Migrate: Functional Fit is Appropriate or higher. Technical Fit is Unreasonable or lower. 
+* Eliminate: Functional Fit is Insufficient or lower. Technical Fit is Unreasonable or lower.
 
 ## Workspace Requirements
 1. Set the standard attributes: Functional Fit and Technical Fit on the application factsheet.
