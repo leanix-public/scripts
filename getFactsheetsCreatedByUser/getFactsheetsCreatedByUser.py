@@ -4,11 +4,11 @@ import pandas as pd
 import base64
 import time
 
-#api_token = '<api-token>'
+api_token = 'aRFZ5MqjZvVRrDemVmYSAN3PwgLmjVZW3kwOygxU'
 auth_url = 'https://evn.leanix.net/services/mtm/v1/oauth2/token' 
 #request_url = 'https://svc.leanix.net/services/mtm/v1' 
 mtm_base_url = 'https://svc.leanix.net/services/mtm/v1' 
-pathfinder_base_url = 'https://app.leanix.net/services/pathfinder/v1'
+pathfinder_base_url = 'https://demo-eu.leanix.net/services/pathfinder/v1'
 
 def getAccessToken(api_token):
   #different than callPost since it needs to send the auth_header
@@ -108,7 +108,7 @@ def getUserCreate(fsId):
   }"""%(fsId)
   return {"query":query}
 
-access_token = getAccessToken(getApiToken())
+access_token = getAccessToken(api_token)
 access_token_json = getAccessTokenJson(access_token)
 
 users = {}

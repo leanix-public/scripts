@@ -2,8 +2,8 @@ import json
 import requests 
 import pandas as pd
 
-api_token = '<API-Token>'
-ws_id = '<WS-ID>
+api_token = 'hc5ydyWcWsMZVbktNdNuY4DcmOsqFMMWCCGGdT5x'
+ws_id = 'JEMDemo'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
 request_url = 'https://app.leanix.net/services/metrics/v1/points' 
 
@@ -20,7 +20,7 @@ df = pd.read_excel('input.xlsx', sheet_name='Worksheet', sep=';')
 for index, row in df.iterrows():
   
   data = {
-      "measurement": row['measurement'] ,
+      "measurement": row['measurement'],
       "workspaceId": ws_id,
       "time": row['date'].strftime('%Y-%m-%d') + "T00:00:00.000Z",
       "tags": [

@@ -49,7 +49,7 @@ def getIds():
       docId = documentNode['node']['id']
       docUrl = documentNode['node']['url']
       if (docUrl.startswith(" ")):
-        print docUrl
+        print(docUrl)
         ids.update({docId: docUrl})      
   return ids
 
@@ -62,9 +62,9 @@ def updateDocument(id,url):
       }
     } 
   """ % (id, url)
-  print "update " + id + " " +  url
+  print("update " + id + " " +  url)
   response = call(query)
-  print response
+  print(response)
 
 # Start of the main program
 

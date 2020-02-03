@@ -2,9 +2,9 @@ import json
 import requests 
 import pandas as pd
 
-api_token = '<TOKEN>'
+api_token = 'a1b5c400-f9bc-487a-bf6f-0d5072f70df1'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql' 
+request_url = 'https://eu.leanix.net/services/pathfinder/v1/graphql'
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),
@@ -26,7 +26,7 @@ def call(query):
 def getRelations():
   query = """
   {
-    allFactSheets(factSheetType: Application) {
+    allFactSheets(factSheetType: BusinessCapability) {
       edges {
         node {
           id
@@ -70,9 +70,9 @@ def updateCosts(app, itc, rel, costs) :
       }
     }
   """ % (app, rel, itc, costs)
-  print "Update costs: " + app + "->" + itc + " = " + str(costs)
+  print("Update costs: " + app + "->" + itc + " = " + str(costs))
   response = call(query)
-  print response
+  print(response)
 
 # Start of the main program
 
