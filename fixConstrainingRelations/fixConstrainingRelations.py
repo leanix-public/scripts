@@ -1,25 +1,20 @@
 import json 
 import requests 
 import pandas as pd
+import lxpy
 
-api_token = '<TOKEN>'
-auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql' 
+        
+config = lxpy.ClientConfiguration(
+            base_url=os.environ.get('BASE_URL', ''),
+            api_token=os.environ.get('API_TOKEN', '')
+        )
+pathfinder = lxpy.Pathfinder(config)
 
-# Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
-response = requests.post(auth_url, auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
-response.raise_for_status() 
-access_token = response.json()['access_token']
-auth_header = 'Bearer ' + access_token
-header = {'Authorization': auth_header}
 
 # General function to call GraphQL given a query
 def call(query):
   data = {"query" : query}
-  json_data = json.dumps(data)
-  response = requests.post(url=request_url, headers=header, data=json_data)
-  response.raise_for_status()
+  response = pathfinder.graphql().process_graph_ql(data)
   return response.json()
 
 def createConstraint(fs, constrainedType, constrainedId, constrainingType, constrainingId) :
