@@ -2,7 +2,7 @@ import json
 import requests 
 import pandas as pd
 
-api_token = 'hc5ydyWcWsMZVbktNdNuY4DcmOsqFMMWCCGGdT5x'
+api_token = '<API-Token>'
 ws_id = 'JEMDemo'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
 request_url = 'https://app.leanix.net/services/metrics/v1/points' 
