@@ -1,0 +1,71 @@
+#!/bin/sh
+set -e  # Always exit on non-zero return codes
+cd "$( cd "$( dirname "$0" )"; pwd )"
+# Check python and pipenv installation
+[ -z "$( command -v python3 )" ] && { echo "python3 not available."; exit 1; }
+[ -z "$( command -v pipenv )" ] && python3 -m pip install pipenv --upgrade
+
+# Suppress warning if pipenv is started inside .venv
+export PIPENV_VERBOSITY=${PIPENV_VERBOSITY:--1}
+# Use relative .venv folder instead of home-folder based
+export PIPENV_VENV_IN_PROJECT=${PIPENV_VENV_IN_PROJECT:-1}
+# Setup python path
+export PYTHONPATH=${PYTHONPATH:-.}
+# Make sure we are running UTF-8 encoding
+export LC_ALL=${LC_ENCODING:-C.UTF-8}
+export LANG=${LC_ENCODING:-C.UTF-8}
+
+venv() {
+    # Create a pipenv virtual environment for IDE/coding support
+    rm -rf .venv
+	pipenv install --dev --skip-lock
+    pipenv run pip install --editable .
+}
+
+clean() {
+    # Clean project base by deleting any non-VC files
+    git status --ignored --short |grep -e "^!!" |awk '{print $2}' |\
+    while read file; do rm -vfr $file; done
+}
+
+test() {
+    # Run all tests in default virtualenv
+    pipenv run py.test tests
+}
+
+coverage() {
+    # Run test coverage checks
+    pipenv run py.test -c .coveragerc --verbose tests
+}
+
+lint() {
+    # Run linter / code formatting checks against source code base
+    pipenv run flake8 lxpy/client* lxpy/config_handler* tests
+}
+
+
+# -----------------------------------------------------------------------------
+
+internal_print_commands() {
+    # Used to print out all possible command over the horizontal ruler above
+    echo "$1\n"
+    {   # All functions in make or make-extension are considered targets
+        cat make 2>/dev/null
+        cat make-extension 2>/dev/null
+    } | egrep -e "^[a-zA-Z_]+\(\)" | egrep -ve "^internal" |\
+    tr "(" " " | awk '{print $1}' | sort
+    echo
+}
+
+# -----------------------------------------------------------------------------
+
+if [ "$1" == "-h" ]||[ "$1" == "--help" ]; then
+    internal_print_commands "Available:"
+    exit 0
+fi
+if [ $# == 0 ]; then
+    internal_print_commands "No command selected. Available:"
+    exit 1
+fi
+# Execute the provided command line
+$@
