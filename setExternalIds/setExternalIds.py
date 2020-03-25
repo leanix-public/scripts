@@ -2,7 +2,7 @@ import json
 import requests
 import pandas as pd
 
-api_token = 'hc5ydyWcWsMZVbktNdNuY4DcmOsqFMMWCCGGdT5x'
+api_token = '<API-TOKEN>'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token'
 request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql'
 
