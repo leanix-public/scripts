@@ -2,9 +2,9 @@ import json
 import requests 
 import pandas as pd
 
-api_token = '<TOKEN>'
-auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql' 
+api_token = 'QAxp6DVcUUYVtZvOUVmp4vyEFghepLPOneSRxyA8'
+auth_url = 'https://us-svc.leanix.net/services/mtm/v1/oauth2/token' 
+request_url = 'https://us.leanix.net/services/pathfinder/v1/graphql' 
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),
@@ -23,15 +23,15 @@ def call(query):
   return response.json()
 
 # Delete the document
-def createDocument(id, name, url):
+def createDocument(id, name, url,description):
   query = """
     mutation {
       createDocument(factSheetId: "%s", name: "%s", url: "%s", description: "%s", validateOnly: false) {
         id
       }
     } 
-  """ % (id, name, url)
-  print("create document ") + id
+  """ % (id, name, url,description)
+  # print("create document ") + id
   response = call(query)
   print(response)
 
