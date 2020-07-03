@@ -29,27 +29,28 @@ def getApplication(fsId):
     return results
 
 
-FUNCTIONAL_SUITABILITY_MAPPING = {"inappropriate": 1,
+TECHNICAL_SUITABILITY_MAPPING = {"inappropriate": 1,
                                   "unreasonable": 2,
                                   "adequate": 3,
                                   "fullyAppropriate": 4}
 
-TECHNICAL_SUITABILITY_MAPPING = {"unreasonable": 1,
+FUNCTIONAL_SUITABILITY_MAPPING = {"unreasonable": 1,
                                  "insufficient": 2,
                                  "appropriate": 3,
                                  "perfect": 4}
 
-TIME_MAPPING = environ['TAG_MAPPING']
+TIME_MAPPING = eval(environ['TAG_MAPPING'])
 
-def calculateTimeTag(functionalSuitability, technicalSuitability):
+def calculateTimeTag(technicalSuitability, functionalSuitability):
+    logging.debug([{"functionalSuitibility": functionalSuitability, "technicalSuitibility":technicalSuitability}])
     if functionalSuitability is None or technicalSuitability is None:
         return None
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
         return TIME_MAPPING["invest"]
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] >= 3:
-        return TIME_MAPPING["eliminate"]
-    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
         return TIME_MAPPING["tolerate"]
+    elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] <= 2 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
+        return TIME_MAPPING["eliminate"]
     elif FUNCTIONAL_SUITABILITY_MAPPING[functionalSuitability] >= 3 and TECHNICAL_SUITABILITY_MAPPING[technicalSuitability] <= 2:
         return TIME_MAPPING["migrate"]
 
@@ -76,6 +77,7 @@ def updateApplication(id, rev, tagPatches):
     }
     }
     status, result = pathfinder.post("/graphql", query)
+    logging.debug({"status":status,"result":result})
     return result
 
 
@@ -86,12 +88,15 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         application = getApplication(req_body['factSheet']['id'])['data']['factSheet']
         logging.info(application)
     except ValueError:
+        func.HttpResponse("Unfortunately we didn't receive your data propperly")
         pass
     tag = calculateTimeTag(
         application["technicalSuitability"], application["functionalSuitability"])
+    logging.debug({"tag":tag})
+    response = "Nothing happened"
     if tag is not None:
         response = (json.dumps(updateApplication(
             application['id'], application['rev'], getTagPatchesValues(application["tags"], tag))))
         logging.info(response)
-        return func.HttpResponse(response)
+    return func.HttpResponse(response)
 
