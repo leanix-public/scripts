@@ -4,9 +4,10 @@ import pandas as pd
 
 
 api_token = '<API Token>'
+workspace_id = '<Your Workspace ID>'
 
-auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://svc.leanix.net/services/mtm/v1/workspaces/3eb07b2e-7ae1-4388-8a17-618ef89388a8/users?page=0' 
+auth_url = 'https://eu-svc.leanix.net/services/mtm/v1/oauth2/token' 
+request_url = 'https://eu-svc.leanix.net/services/mtm/v1/workspaces/%s/users?page=0'%(workspace_id) 
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),
