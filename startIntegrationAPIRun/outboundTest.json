@@ -1,0 +1,10 @@
+{
+	"connectorType": "outboundFactSheet",
+	"connectorId": "outboundFactSheet",
+	"connectorVersion": "0.0.1",
+	"lxVersion": "1.0.0",
+	"description": "Export Sample Data From LeanIX",
+	"processingDirection": "outbound",
+	"processingMode": "partial",
+    "customFields": {}
+}

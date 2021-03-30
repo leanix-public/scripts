@@ -1,0 +1,50 @@
+{
+	"connectorType": "inboundExample",
+	"connectorId": "inbound-example",
+	"connectorVersion": "1.0.0",
+	"lxVersion": "1.0.0",
+	"description": "Imports sample data into LeanIX",
+	"processingDirection": "inbound",
+	"processingMode": "partial",
+	"customFields": {},
+	"content": [
+		{
+			"type": "Deployment",
+			"id": "634c16bf-198c-1129-9d08-92630b573fbf",
+			"data": {
+				"app": "HR Service",
+				"version": "1.8.4",
+				"maturity": "3",
+				"clusterName": "westeurope",
+				"tags": []
+			}
+		},
+		{
+			"type": "Deployment",
+			"id": "784616bf-198c-11f9-9da8-9263b0573fbe",
+			"data": {
+				"app": "Finance Service",
+				"version": "10.5",
+				"maturity": "5",
+				"clusterName": "westeurope",
+				"tags": [
+					"Important"
+				]
+			}
+		},
+		{
+			"type": "Cluster",
+			"id": "westeurope",
+			"data": {
+				"version": "1",
+				"maturity": "2",
+				"location": "1600 Pennsylvania Ave Nw, Washington, DC 20500",
+				"clusterName": "westeurope",
+				"tags": [
+					"Important",
+					"Mature"
+				]
+			}
+		}
+	]
+}

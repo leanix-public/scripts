@@ -1,0 +1,116 @@
+{
+	"processors": [
+		{
+			"processorType": "inboundFactSheet",
+			"processorName": "Apps from Deployments",
+			"processorDescription": "Creates LeanIX Applications from Kubernetes Deployments",
+			"type": "Application",
+			"filter": {
+				"exactType": "Deployment"
+			},
+			"identifier": {
+				"external": {
+					"id": {
+						"expr": "${content.id}"
+					},
+					"type": {
+						"expr": "externalId"
+					}
+				}
+			},
+			"updates": [
+				{
+					"key": {
+						"expr": "name"
+					},
+					"values": [
+						{
+							"expr": "${data.app}"
+						}
+					]
+				},
+				{
+					"key": {
+						"expr": "description"
+					},
+					"values": [
+						{
+							"expr": "${data.app} - ${data.version}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"processorType": "inboundFactSheet",
+			"processorName": "ITComponent from Cluster",
+			"processorDescription": "Creates LeanIX ITComponents from Kubernetes Clusters",
+			"type": "ITComponent",
+			"filter": {
+				"exactType": "Cluster"
+			},
+			"identifier": {
+				"external": {
+					"id": {
+						"expr": "${content.id}"
+					},
+					"type": {
+						"expr": "externalId"
+					}
+				}
+			},
+			"updates": [
+				{
+					"key": {
+						"expr": "name"
+					},
+					"values": [
+						{
+							"expr": "${data.clusterName}"
+						}
+					]
+				},
+				{
+					"key": {
+						"expr": "location"
+					},
+					"values": [
+						{
+							"expr": "${data.location}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"processorType": "inboundRelation",
+			"processorName": "Rel from Apps to ITComponent",
+			"processorDescription": "Creates LeanIX Relations between the created or updated Applications and ITComponents",
+			"type": "relApplicationToITComponent",
+			"filter": {
+				"exactType": "Deployment"
+			},
+			"from": {
+				"external": {
+					"id": {
+						"expr": "${content.id}"
+					},
+					"type": {
+						"expr": "externalId"
+					}
+				}
+			},
+			"to": {
+				"external": {
+					"id": {
+						"expr": "${data.clusterName}"
+					},
+					"type": {
+						"expr": "externalId"
+					}
+				}
+			},
+			"run": 1
+		}
+	]
+}

@@ -1,0 +1,93 @@
+{
+    "scope": {
+      "facetFilters": [],
+      "ids": []
+    },
+    "processors": [
+      {
+        "processorType": "outboundFactSheet",
+        "processorName": "Export to LDIF",
+        "processorDescription": "This is an example how to use the processor",
+        "enabled": true,
+        "fields": [
+          "lifecycle",
+          "location",
+          "createdAt",
+          "description",
+          "technicalSuitabilityDescription"
+        ],
+        "relations": {
+          "filter": [
+            "relToParent",
+            "relApplicationToITComponent"
+          ],
+          "fields": [
+            "description"
+          ],
+          "targetFields": [
+            "displayName",
+            "externalId"
+          ],
+          "constrainingRelations": false
+        },
+        "tags": {
+          "groups": [
+            "Other tags",
+            "Cloud Transformation"
+          ]
+        },
+        "subscriptions": {
+          "types": [
+            "RESPONSIBLE"
+          ]
+        },
+        "documents": {
+          "filter": ".*"
+        },
+        "output": [
+          {
+            "key": {
+              "expr": "content.id"
+            },
+            "values": [
+              {
+                "expr": "${lx.factsheet.id}"
+              }
+            ]
+          },
+          {
+            "key": {
+              "expr": "content.type"
+            },
+            "values": [
+              {
+                "expr": "${lx.factsheet.type}"
+              }
+            ]
+          },
+          {
+            "key": {
+              "expr": "Description"
+            },
+            "values": [
+              {
+                "expr": "${lx.factsheet.description}"
+              }
+            ],
+            "optional": true
+          },
+          {
+            "key": {
+              "expr": "creationDateTime"
+            },
+            "mode": "selectFirst",
+            "values": [
+              {
+                "expr": "${lx.factsheet.createdAt}"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
