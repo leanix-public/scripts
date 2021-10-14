@@ -1,0 +1,10 @@
+{
+	"connectorType": "inboundRelation",
+	"connectorId": "Update relationType",
+	"connectorVersion": "1.0.0",
+	"lxVersion": "1.0.0",
+	"description": "",
+	"processingDirection": "inbound",
+	"processingMode": "partial",
+	"content": []
+}
