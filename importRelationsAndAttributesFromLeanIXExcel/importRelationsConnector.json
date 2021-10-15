@@ -1,0 +1,23 @@
+{
+    "connectorType": "inboundRelation",
+    "connectorId": "Update relationType",
+    "connectorVersion": "1.0.0",
+    "processingDirection": "inbound",
+    "processingMode": "partial",
+    "processors": [
+        {
+            "processorType": "inboundRelation",
+            "processorName": "Update relationType",
+            "processorDescription": "Creates and updates LeanIX Relations of type relationType",
+            "type": "relationType",
+            "from": {
+                "internal": "${content.id}"
+            },
+            "to": {
+                "internal": "${data.targetId}"
+            },
+            "run": 0,
+            "updates": []
+        }
+    ]
+}
