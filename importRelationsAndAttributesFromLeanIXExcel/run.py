@@ -225,11 +225,11 @@ for filename in filenames:
     with open(update_relation_ldif['connectorId'] + '-ldif.json', 'w') as outfile:
         json.dump(update_relation_ldif, outfile, indent=3)
 
-    # put_connector(update_relation_connector)
+    put_connector(update_relation_connector)
 
-    # result = handle_run(update_relation_ldif, 'inbound')
+    result = handle_run(update_relation_ldif, 'inbound')
 
-    # delete_connector(update_relation_connector)
+    delete_connector(update_relation_connector)
 
 
 
