@@ -1,5 +1,6 @@
 ## Description
 This script loads relations and their attributes from one or many Excel files in the standard LeanIX Excel Import/Export Format.
+A file of Un-Matched records is exported as NonMatchRecords.xlsx
 
 ### Dependencies
 

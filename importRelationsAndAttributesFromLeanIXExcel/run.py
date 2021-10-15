@@ -3,8 +3,11 @@ import json
 import time
 import pandas as pd
 import os
+import numpy as np
 
 
+
+non_match_records = []
 
 
 with open('configs.json', 'r') as infile:
@@ -14,8 +17,8 @@ with open('configs.json', 'r') as infile:
     domain = configs['domain']
     region = configs['region']
 
-auth_url = f'https://{region}-svc.leanix.net/services/mtm/v1/oauth2/token'
-request_base = f'https://{domain}/'
+auth_url = "https:/{region}.leanix.net/services/mtm/v1/oauth2/token"
+request_base = 'https://{domain}/'
 
 
 
@@ -55,6 +58,7 @@ def call_put(request_url, data=False):
         pass
 
 def call_delete(request_url):
+    import pdb; pdb.set_trace()
     response = requests.delete(
         url=request_url, headers=header)
     try:
@@ -79,19 +83,19 @@ def get_graphql(query):
 def create_run(run_config):
     create_run_endpoint = request_base + "services/integration-api/v1/synchronizationRuns"
     result = call_post(create_run_endpoint, run_config)
-    return json.loads(result.text)["id"]
+    return result['id']
 
 
 def start_run(run_id):
     start_run_endpoint = request_base + "services/integration-api/v1/synchronizationRuns/%s/start" % (run_id)
-    result = call_post(start_run_endpoint)
-    return result.status_code
+    call_post(start_run_endpoint)
 
 
 def check_run_status(run_id, status_response=None):
     print("checking status")
     status_endpoint = request_base + "services/integration-api/v1/synchronizationRuns/%s/status" % (run_id)
     status_response = call_get(status_endpoint)
+    import pdb; pdb.set_trace()
     status_response = json.loads(status_response.text)["status"]
     print(status_response)
     if status_response != "FINISHED":
@@ -154,8 +158,11 @@ def split(value, delimiter, preserve_index):
 
 def format_entry_relations(fs_record):
     display_names = fs_record[relation_type + ':displayName'].split(';')
+    display_names = [x for x in display_names if x.strip()]
     entries = []
     for display_name in display_names:
+        if display_name in ('', np.NaN):
+            import pdb;pdb.set_trace()
         entry =  {
             'id': fs_record['id'],
             'type': relation_type,
@@ -169,6 +176,7 @@ def format_entry_relations(fs_record):
             except KeyError:
                 entry['data']['targetId'] = ''
                 print('match not found for ' + display_name)
+                non_match_records.append({'type': relation_type.split('relProjectTo')[1], 'name': display_name})
         entry['data']['targetDisplayName'] = display_name
         entries.append(entry)
     return entries
@@ -176,7 +184,6 @@ def format_entry_relations(fs_record):
 
 #### Main Script
 filenames = [x for x in os.listdir('run_files') if '.xlsx' in x]
-
 
 for filename in filenames:
 
@@ -219,10 +226,12 @@ for filename in filenames:
 
     update_relation_ldif['content'] = content
 
+
+
     with open(update_relation_connector['connectorId'] + '-connector.json', 'w') as outfile:
         json.dump(update_relation_connector, outfile, indent=3)
 
-    with open(update_relation_ldif['connectorId'] + '-ldif.json', 'w') as outfile:
+    with open(update_relation_ldif['connectorId'] + '-Test-ldif.json', 'w') as outfile:
         json.dump(update_relation_ldif, outfile, indent=3)
 
     put_connector(update_relation_connector)
@@ -231,6 +240,10 @@ for filename in filenames:
 
     delete_connector(update_relation_connector)
 
+
+
+nm_df = pd.DataFrame.from_records(non_match_records)
+nm_df.to_excel('NonMatchRecords.xlsx', index=False)
 
 
 
