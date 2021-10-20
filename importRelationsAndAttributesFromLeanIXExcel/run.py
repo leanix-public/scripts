@@ -9,7 +9,6 @@ import numpy as np
 
 non_match_records = []
 
-
 with open('configs.json', 'r') as infile:
     configs = json.load(infile)
     api_token = configs['api_token']
@@ -58,7 +57,6 @@ def call_put(request_url, data=False):
         pass
 
 def call_delete(request_url):
-    import pdb; pdb.set_trace()
     response = requests.delete(
         url=request_url, headers=header)
     try:
@@ -95,7 +93,6 @@ def check_run_status(run_id, status_response=None):
     print("checking status")
     status_endpoint = request_base + "services/integration-api/v1/synchronizationRuns/%s/status" % (run_id)
     status_response = call_get(status_endpoint)
-    import pdb; pdb.set_trace()
     status_response = json.loads(status_response.text)["status"]
     print(status_response)
     if status_response != "FINISHED":
