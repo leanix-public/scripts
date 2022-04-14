@@ -8,12 +8,12 @@ import lxpy
 
 
 mtm_base_url = 'https://svc.leanix.net/services/mtm/v1' 
-pathfinder_base_url = 'https://adidas.leanix.net/services/pathfinder/v1'
+pathfinder_base_url = 'https://abc.leanix.net/services/pathfinder/v1'
 
 # Authorization
 config = lxpy.ClientConfiguration(
   base_url=environ.get('BASE_URL', 'us.leanix.net'),
-  api_token=environ.get('API_TOKEN', 'YSCOXQbwROr8XMWGutW3NAhtpEsuKsWtH3JDPSX3')
+  api_token=environ.get('API_TOKEN', '')
 )
 
 # Setup for Pathfinder API
