@@ -5,7 +5,7 @@ import pandas as pd
 api_token = '<API-Token>'
 ws_id = 'JEMDemo'
 auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://app.leanix.net/services/metrics/v1/points' 
+request_url = 'https://app.leanix.net/services/metrics/v2' 
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),
@@ -16,28 +16,25 @@ auth_header = 'Bearer ' + access_token
 header = {'Authorization': auth_header, 'Content-Type': 'application/json'}
   
 df = pd.read_excel('input.xlsx', sheet_name='Worksheet', sep=';')
-
+schema_name = df["measurement"].tolist()[0]
+keys = df["keys"].unique().tolist()
+attributes = [{"name": key, "type": "metric"} for key in keys] + [{"name": "factSheetId", "type": "dimension"}]
+schema = {
+  "name": schema_name,
+  "description": "Daily costs for cloud resources.",
+  "attributes": attributes
+}
+response = requests.post(url=f"{request_url}/schemas, headers=headers, json=schema)
+schema_uuid = response.json()["uuid"]
 for index, row in df.iterrows():
   
+  # TODO v2 currently does not support creating points missing some columns
   data = {
-      "measurement": row['measurement'],
-      "workspaceId": ws_id,
-      "time": row['date'].strftime('%Y-%m-%d') + "T00:00:00.000Z",
-      "tags": [
-        {
-          "k": "factSheetId",
-          "v": row['factSheetId'] 
-        }
-      ],
-      "fields": [
-        {
-          "k": row['key'],
-          "v": row['value']
-        }
-      ]
+      "timestamp": row['date'].strftime('%Y-%m-%d') + "T00:00:00.000Z",
+      "factSheetId": row["factSheetId"].
+      row['key']: row['value']
     }
-  json_data = json.dumps(data)
-  response = requests.post(url=request_url, headers=header, data=json_data)
+  response = requests.post(url=request_url, headers=header, json=data)
 
   response.raise_for_status()
   print(response.json())
