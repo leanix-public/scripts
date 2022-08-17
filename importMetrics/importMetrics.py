@@ -28,7 +28,6 @@ response = requests.post(url=f"{request_url}/schemas", headers=header, json=sche
 schema_uuid = response.json()["uuid"]
 for index, row in df.iterrows():
   
-  # TODO v2 currently does not support creating points missing some columns
   data = {
       "timestamp": row['date'].strftime('%Y-%m-%d') + "T00:00:00.000Z",
       "factSheetId": row["factSheetId"],
