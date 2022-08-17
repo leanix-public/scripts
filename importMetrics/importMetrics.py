@@ -15,26 +15,26 @@ access_token = response.json()['access_token']
 auth_header = 'Bearer ' + access_token
 header = {'Authorization': auth_header, 'Content-Type': 'application/json'}
   
-df = pd.read_excel('input.xlsx', sheet_name='Worksheet', sep=';')
+df = pd.read_excel('input.xlsx', sheet_name='Worksheet')
 schema_name = df["measurement"].tolist()[0]
-keys = df["keys"].unique().tolist()
+keys = df["key"].unique().tolist()
 attributes = [{"name": key, "type": "metric"} for key in keys] + [{"name": "factSheetId", "type": "dimension"}]
 schema = {
   "name": schema_name,
   "description": "Daily costs for cloud resources.",
   "attributes": attributes
 }
-response = requests.post(url=f"{request_url}/schemas, headers=headers, json=schema)
+response = requests.post(url=f"{request_url}/schemas", headers=header, json=schema)
 schema_uuid = response.json()["uuid"]
 for index, row in df.iterrows():
   
   # TODO v2 currently does not support creating points missing some columns
   data = {
       "timestamp": row['date'].strftime('%Y-%m-%d') + "T00:00:00.000Z",
-      "factSheetId": row["factSheetId"].
+      "factSheetId": row["factSheetId"],
       row['key']: row['value']
     }
-  response = requests.post(url=request_url, headers=header, json=data)
+  response = requests.post(url=f"{request_url}/schemas/{schema_uuid}/points", headers=header, json=data)
 
   response.raise_for_status()
   print(response.json())
