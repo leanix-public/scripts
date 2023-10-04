@@ -17,7 +17,7 @@ config.json
   "skip_if_latest_diagram_up_to_date" : true,
   "svc_product_weight": 4,
   "svc_provided_api_weight": 2,
-  "svc_consumed_api_weigth": 1,
+  "svc_consumed_api_weight": 1,
   "scale_factor": 40,
   "dry_run": false
 }
@@ -27,7 +27,7 @@ def generate_and_upload_diagram(config):
     vsm_interface = vsm_api.LeanIxVsmApi(config["hostname"], config["vsm_api_token"])
     eam_interface = eam_api.LeanIxEamApi(config["hostname"], config["eam_workspace"], config["eam_api_token"])
     normalizer = normalize_vsm_data.Normalization(config["product_name"], config["product_link_name"])
-    layout_algoriths = layout_diagram_algorithms.LayoutDiagramAlgorithms(config["svc_product_weight"], config["svc_consumed_api_weigth"], config["svc_provided_api_weight"])
+    layout_algoriths = layout_diagram_algorithms.LayoutDiagramAlgorithms(config["svc_product_weight"], config["svc_consumed_api_weight"], config["svc_provided_api_weight"])
     drawio_generator = drawio_diagram_generator.DrawIODiagramGenerator(config["hostname"], config["vsm_workspace"], config["scale_factor"])
     
     graphql_response = vsm_interface.fetch_vsm_data(config["product_name"])
