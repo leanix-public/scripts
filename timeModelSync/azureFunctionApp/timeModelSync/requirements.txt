@@ -1,2 +1,3 @@
 azure-functions
 leanix_python_client-0.2.0-py3-none-any.whl
+azure.functions~=1.0a
