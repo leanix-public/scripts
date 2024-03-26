@@ -1,15 +1,14 @@
-createDocuments script
+correctUserAccount script
 
-This script lets you create Documents from either a csv or a xlsx file.  
+This script lets you cleanup orphaned relations.  
 
 Before using this script you will need the following information:
 - API-Token
 - The instance of your workspace
-- Name and filetype of you input-file
 
 Run the script with the following command:  
 ```bash
-python3 createDocuments.py
+python3 correctUserAccount.py
 ```
 
 After running the script, follow the instructions on screen

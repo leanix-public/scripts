@@ -90,7 +90,6 @@ except ValueError:
 
 try:
     filename = input("Please enter the full name of your input file: ")
-    #get path to specified file WIP
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, filename)
 except ValueError:

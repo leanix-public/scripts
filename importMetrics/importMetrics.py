@@ -61,9 +61,9 @@ try:
     auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
 
     if instance == 10:
-        request_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1/graphql'
+        request_url = 'https://demo-' + instance + '-1.leanix.net/services/metrics/v2'
     else:
-        request_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1/graphql'
+        request_url = 'https://' + instance + '.leanix.net/services/metrics/v2'
 
 except NameError:
     print("")
@@ -90,7 +90,6 @@ except ValueError:
 
 try:
     filename = input("Please enter the full name of your input file: ")
-    #get path to specified file WIP
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, filename)
 except ValueError:
