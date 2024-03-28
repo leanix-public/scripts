@@ -2,9 +2,73 @@ import json
 import requests 
 import pandas as pd
 
-api_token = '<TOKEN>'
-auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql' 
+#INPUT
+auth_url = "Placeholder"
+request_url = "Placeholder"
+
+api_token = input("Enter your API-Token: ")
+
+print("")
+print("Choose the instance your workspace is on:")
+print("")
+print("1. EU")
+print("2. US")
+print("3. AU")
+print("4. UK")
+print("5. DE")
+print("6. CH")
+print("7. AE")
+print("8. CA")
+print("9. BR")
+print(" ")
+
+try:
+    choice = input("Enter your choice (1/2/3/4/5/6/7/8/9): ")
+           
+    if choice == "1":
+        instance = "eu"
+    elif choice == "2":
+        instance = "us"
+    elif choice == "3":
+        instance = "au"
+    elif choice == "4":
+        instance = "uk"
+    elif choice == "5":
+        instance = "de"
+    elif choice == "6":
+        instance = "ch"
+    elif choice == "7":
+        instance = "ae"
+    elif choice == "8":
+        instance = "ca"
+    elif choice == "9":
+        instance = "br"
+    elif choice == "10":
+        instance = "eu"
+    else:
+        print("")
+        print("Invalid choice. Please select 1, 2, 3, 4, 5, 6, 7, 8 or 9")
+        print("")
+
+except ValueError:
+    print("")
+    print("Invalid input. Please enter a number.")
+    print("")
+
+try:
+    auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
+
+    if instance == 10:
+        request_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1/graphql'
+    else:
+        request_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1/graphql'
+
+except NameError:
+    print("")
+    print("Invalid input. Please enter a number.")
+    print("")
+    exit()
+    
 
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 response = requests.post(auth_url, auth=('apitoken', api_token),
@@ -18,7 +82,7 @@ header = {'Authorization': auth_header}
 def call(query):
   data = {"query" : query}
   json_data = json.dumps(data)
-  print json_data
+  print(json_data)
   response = requests.post(url=request_url, headers=header, data=json_data)
   response.raise_for_status()
   return response.json()
@@ -34,7 +98,7 @@ def createBCRelation(app, bc) :
       }
     }
   """ % (app, bc)
-  print "Create app - bc relation: " + app + "->" + bc
+  print ("Create app - bc relation: " + app + "->" + bc)
   call(query)
 
 def createUGRelation(app, bc) :
@@ -48,7 +112,7 @@ def createUGRelation(app, bc) :
       }
     }
   """ % (app, bc)
-  print "Create app - ug relation: " + app + "->" + bc
+  print("Create app - ug relation: " + app + "->" + bc)
   call(query)
 
 def createProcRelation(app, bc) :
@@ -62,7 +126,7 @@ def createProcRelation(app, bc) :
       }
     }
   """ % (app, bc)
-  print "Create app - bc relation: " + app + "->" + bc
+  print("Create app - bc relation: " + app + "->" + bc)
   call(query)
 
 def createConstraint(fs, constrainedType, constrainedId, constrainingType, constrainingId) :
@@ -74,7 +138,7 @@ def createConstraint(fs, constrainedType, constrainedId, constrainingType, const
       }
     }
   """ % (fs, constrainedType, constrainedId, constrainingType, constrainingId)
-  print call(query)
+  print(call(query))
 
 def deleteConstraint(fs, constrainedType, constrainedId, constrainingType, constrainingId) :
   query = """
@@ -85,7 +149,7 @@ def deleteConstraint(fs, constrainedType, constrainedId, constrainingType, const
       }
     }
   """ % (fs, constrainedType, constrainedId, constrainingType, constrainingId)
-  print call(query)
+  print(call(query))
 
 def deleteConstraints(rel) :
   query = """
@@ -112,14 +176,14 @@ def deleteConstraints(rel) :
 }
   """
   response = call(query)
-  print response
+  print(response)
   for appNode in response['data']['allFactSheets']['edges']:
     appId = appNode['node']['id']
-    print appId
+    print(appId)
     for relationNode in appNode['node'][rel]['edges']:
       bcId = relationNode['node']['factSheet']['id']
       for constraint in relationNode['node']['constrainingRelations']['relations']:
-        print deleteConstraint(appId, rel, bcId, 'relApplicationToUserGroup', constraint['factSheet']['id'])
+        print(deleteConstraint(appId, rel, bcId, 'relApplicationToUserGroup', constraint['factSheet']['id']))
 
 # Start of the main logic
 

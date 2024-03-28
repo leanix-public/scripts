@@ -13,11 +13,80 @@ import base64
 import click
 import pandas as pd
 
+
+"""
 # Define Global variables here
 # Required Global Variable : apiToken
 apiToken = ""
 # Update the Base URL of your LeanIX instance
 base_url = 'https://demo-eu.leanix.net'
+"""
+
+#INPUT
+auth_url = "Placeholder"
+request_url = "Placeholder"
+
+apiToken = input("Enter your API-Token: ")
+
+print("")
+print("Choose the instance your workspace is on:")
+print("")
+print("1. EU")
+print("2. US")
+print("3. AU")
+print("4. UK")
+print("5. DE")
+print("6. CH")
+print("7. AE")
+print("8. CA")
+print("9. BR")
+print(" ")
+
+try:
+    choice = input("Enter your choice (1/2/3/4/5/6/7/8/9): ")
+           
+    if choice == "1":
+        instance = "eu"
+    elif choice == "2":
+        instance = "us"
+    elif choice == "3":
+        instance = "au"
+    elif choice == "4":
+        instance = "uk"
+    elif choice == "5":
+        instance = "de"
+    elif choice == "6":
+        instance = "ch"
+    elif choice == "7":
+        instance = "ae"
+    elif choice == "8":
+        instance = "ca"
+    elif choice == "9":
+        instance = "br"
+    elif choice == "10":
+        instance = "eu"
+    else:
+        print("")
+        print("Invalid choice. Please select 1, 2, 3, 4, 5, 6, 7, 8 or 9")
+        print("")
+
+except ValueError:
+    print("")
+    print("Invalid input. Please enter a number.")
+    print("")
+
+try:
+    if instance == 10:
+        base_url = 'https://demo-' + instance + '-1.leanix.net'
+    else:
+        base_url = 'https://' + instance + '.leanix.net'
+
+except NameError:
+    print("")
+    print("Invalid input. Please enter a number.")
+    print("")
+    exit()
+
 
 def getAccessToken(api_token):
     api_token = api_token
