@@ -81,7 +81,7 @@ except ValueError:
 try:
     mtm_base_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1' 
 
-    if instance == 10:
+    if choice == "10":
         pathfinder_base_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1'
     else:
         pathfinder_base_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1'

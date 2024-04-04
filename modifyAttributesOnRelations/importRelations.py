@@ -76,7 +76,7 @@ except ValueError:
     print("")
 
 try:
-    if instance == 10:
+    if choice == "10":
         base_url = 'https://demo-' + instance + '-1.leanix.net'
     else:
         base_url = 'https://' + instance + '.leanix.net'

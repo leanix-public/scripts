@@ -1,6 +1,6 @@
 deleteDocuments script
 
-This script lets you delete every document from your workspace.  
+This script lets you delete every document from every ITComponent from your workspace.  
 
 Before using this script you will need the following information:
 - API-Token

@@ -69,7 +69,7 @@ except ValueError:
 try:
     auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
 
-    if instance == 10:
+    if choice == "10":
         url = 'https://demo-' + instance + '-svc.leanix.net/services/mtm/v1'
     else:
         url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1'

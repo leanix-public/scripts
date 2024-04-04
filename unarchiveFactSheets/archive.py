@@ -1,6 +1,7 @@
 import json 
 import requests 
 import pandas as pd
+import os
 
 #INPUT
 auth_url = "Placeholder"
@@ -58,7 +59,7 @@ except ValueError:
 try:
     auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
 
-    if instance == 10:
+    if choice == "10":
         request_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1/graphql'
     else:
         request_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1/graphql'
@@ -68,6 +69,32 @@ except NameError:
     print("Invalid input. Please enter a number.")
     print("")
     exit()
+
+try:
+    importchoice = input("Please indicate the file format you want to import from (csv/xlsx): ").lower()
+
+    if importchoice == "csv":
+        filetype = "csv"
+    elif importchoice == "xlsx":
+        filetype = "xlsx"
+    else:
+        print("")
+        print("Invalid choice")
+        print("")
+
+except ValueError:
+    print("")
+    print("Invalid input.")
+    print("")
+
+try:
+    filename = input("Please enter the full name of your input file: ")
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, filename)
+except ValueError:
+    print("")
+    print("Invalid input.")
+    print("")
 
     
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
@@ -97,13 +124,26 @@ mutation {
       }
     }
   """ % (id)
-  print ("delete " + id)
+  print ("recover " + id)
   response = call(query)
   print (response)
 
 # Start of the main program
+if filetype == "csv":
+    try:
+        df = pd.read_csv(filename, sep=';')
 
-df = pd.read_csv('Book1.csv',sep=';')
+    except Exception as e:
+        print(e)
+        exit()
+
+if filetype == "xlsx":
+    try:
+        df = pd.read_excel(filename, sheet_name='Worksheet')
+
+    except Exception as e:
+        print(e)
+        exit()
   
 for index, row in df.iterrows():
   unarchiveFactSheets(row['id'])
