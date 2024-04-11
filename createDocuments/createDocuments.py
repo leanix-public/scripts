@@ -22,7 +22,7 @@ def call(query):
   response.raise_for_status()
   return response.json()
 
-# Delete the document
+# Create the document
 def createDocument(id, name, url,description):
   query = """
     mutation {
@@ -36,7 +36,6 @@ def createDocument(id, name, url,description):
   print(response)
 
 # Start of the main program
-
 df = pd.read_csv('Book1.csv',sep=';')
   
 for index, row in df.iterrows():
