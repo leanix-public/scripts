@@ -9,7 +9,6 @@ Before using this script you will need the following information:
 
 Run the script with the following command:  
 ```bash
-python3 archive.py  
 poetry run python archive.py
 ```
 
