@@ -13,7 +13,7 @@ Attributes:
     auth_url (str): URL to receive an authentication header.
     request_url (str): URL to send graphql requests to.
     api_token (str): API-Token to authenticate with.
-    header (dict)
+    header (dict): Dictionary containing the bearer token
 
 """
 
@@ -35,7 +35,7 @@ def get_bearer_token(auth_url, api_token):
         api_token (str): The api-token to authenticate with
 
     Returns:
-        _type_: _description_
+        dict: Dictionary containing the bearer token
     """
     response = requests.post(auth_url, auth=('apitoken', api_token),
                              data={'grant_type': 'client_credentials'})
