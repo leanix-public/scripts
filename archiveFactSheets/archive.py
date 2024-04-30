@@ -28,6 +28,15 @@ from typing_extensions import Annotated
 #LOGIC
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
 def get_bearer_token(auth_url, api_token):
+    """Function to retrieve the bearer token for authentication
+
+    Args:
+        auth_url (str): URL to retrieve the bearer token from
+        api_token (str): The api-token to authenticate with
+
+    Returns:
+        _type_: _description_
+    """
     response = requests.post(auth_url, auth=('apitoken', api_token),
                              data={'grant_type': 'client_credentials'})
     response.raise_for_status() 
