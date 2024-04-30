@@ -19,10 +19,23 @@ Attributes:
 
 import json 
 import requests 
-import pandas as pd
+import csv
 import os
-import typer
-from typing_extensions import Annotated
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+#Request timeout
+TIMEOUT = 20
+
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
+
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/graphql'
+
+IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 
 #LOGIC
@@ -37,13 +50,18 @@ def get_bearer_token(auth_url, api_token):
     Returns:
         dict: Dictionary containing the bearer token
     """
+
+    if not LEANIX_API_TOKEN:
+        raise Exception('A valid token is required')
     response = requests.post(auth_url, auth=('apitoken', api_token),
-                             data={'grant_type': 'client_credentials'})
+                             data={'grant_type': 'client_credentials'},
+                             timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
     auth_header = 'Bearer ' + access_token
     header = {'Authorization': auth_header}
     return header
+
 
 # General function to call GraphQL given a query
 def call(query, header, request_url):
@@ -57,9 +75,10 @@ def call(query, header, request_url):
     """
     data = {"query" : query}
     json_data = json.dumps(data)
-    response = requests.post(url=request_url, headers=header, data=json_data)
+    response = requests.post(url=request_url, headers=header, data=json_data, timeout=TIMEOUT)
     response.raise_for_status()
     return response.json()
+
 
 # Delete the subscription
 def archiveFactSheets(id, header, request_url):
@@ -83,105 +102,36 @@ def archiveFactSheets(id, header, request_url):
 
 
 # Start of the main program
-def main (region_choice: Annotated[str, typer.Argument], api_token: Annotated[str, typer.Argument], import_choice: Annotated[str, typer.Argument], filename: Annotated[str, typer.Argument]):
-    try:
-        if region_choice == "1":
-            instance = "eu"
-        elif region_choice == "2":
-            instance = "us"
-        elif region_choice == "3":
-            instance = "au"
-        elif region_choice == "4":
-            instance = "uk"
-        elif region_choice == "5":
-            instance = "de"
-        elif region_choice == "6":
-            instance = "ch"
-        elif region_choice == "7":
-            instance = "ae"
-        elif region_choice == "8":
-            instance = "ca"
-        elif region_choice == "9":
-            instance = "br"
-        elif region_choice == "10":
-            instance = "eu"
-        else:
-            print("")
-            print("Invalid choice. Please select 1, 2, 3, 4, 5, 6, 7, 8 or 9")
-            print("")
+def main ():
 
-    except ValueError:
-        print("")
-        print("Invalid input. Please enter a number.")
-        print("")
-
-    try:
-        auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
-
-        if region_choice == "10":
-            request_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1/graphql'
-        else:
-            request_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1/graphql'
-
-    except NameError:
-        print("")
-        print("Invalid input. Please enter a number.")
-        print("")
-        exit()
-
-    try:
-        if import_choice == "csv":
-            filetype = "csv"
-        elif import_choice == "xlsx":
-            filetype = "xlsx"
-        else:
-            print("")
-            print("Invalid choice")
-            print("")
-
-    except ValueError:
-        print("")
-        print("Invalid input.")
-        print("")
-
+    auth_url = LEANIX_AUTH_URL
+    request_url = LEANIX_REQUEST_URL
+    
     try:
         dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, filename)
+        filename = os.path.join(dirname, IMPORT_FILE)
     except ValueError:
-        print("")
-        print("Invalid input.")
-        print("")
+        logging.error('Failed to parse file input')
 
 
-    if filetype == "csv":
+    header = get_bearer_token(auth_url, LEANIX_API_TOKEN)
+
+    with open(filename) as df:
         try:
-            df = pd.read_csv(filename, sep=';')
+            logging.info(f'Parsing csv file: {df.name}')
+            reader = csv.DictReader(df, delimiter=';')
 
         except Exception as e:
-            print(e)
-            exit()
+            logging.error(f'Failed to load csv file: {e}')
 
-    elif filetype == "xlsx":
-        try:
-            df = pd.read_excel(filename, sheet_name='Worksheet')
 
-        except Exception as e:
-            print(e)
-            exit()
-
-    else:
-        print("")
-        print("Invalid choice. Please select either csv or xlsx")
-        print("")
-
-    header = get_bearer_token(auth_url, api_token)
-    try:
-        for index, row in df.iterrows():
+    try: 
+        for row in reader:
             archiveFactSheets(row['id'], header, request_url)
 
     except Exception as e:
-        print(e)
-        exit()
+        logging.error(f'Error while processing factsheets')
+
 
 if __name__ == "__main__":
-    typer.run(main)
+    main()
