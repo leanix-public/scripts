@@ -1,93 +1,79 @@
 import json 
 import requests 
 import pandas as pd
+import os
+import logging
 
 
-#INPUT
-auth_url = "Placeholder"
-request_url = "Placeholder"
+logging.basicConfig(level=logging.INFO)
 
-api_token = input("Enter your API-Token: ")
+#Request timeout
+TIMEOUT = 20
 
-print("")
-print("Choose the instance your workspace is on:")
-print("")
-print("1. EU")
-print("2. US")
-print("3. AU")
-print("4. UK")
-print("5. DE")
-print("6. CH")
-print("7. AE")
-print("8. CA")
-print("9. BR")
-print(" ")
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 
-try:
-    choice = input("Enter your choice (1/2/3/4/5/6/7/8/9): ")
-           
-    if choice == "1":
-        instance = "eu"
-    elif choice == "2":
-        instance = "us"
-    elif choice == "3":
-        instance = "au"
-    elif choice == "4":
-        instance = "uk"
-    elif choice == "5":
-        instance = "de"
-    elif choice == "6":
-        instance = "ch"
-    elif choice == "7":
-        instance = "ae"
-    elif choice == "8":
-        instance = "ca"
-    elif choice == "9":
-        instance = "br"
-    elif choice == "10":
-        instance = "eu"
-    else:
-        print("")
-        print("Invalid choice. Please select 1, 2, 3, 4, 5, 6, 7, 8 or 9")
-        print("")
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/bookmarks'
 
-except ValueError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-
-try:
-    auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
-
-    if choice == "10":
-        request_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1/bookmarks'
-    else:
-        request_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1/bookmarks'
-
-except NameError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-    exit()
+IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 
+#LOGIC
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
-response = requests.post(auth_url, auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
-response.raise_for_status() 
-access_token = response.json()['access_token']
-auth_header = 'Bearer ' + access_token
-header = {'Authorization': auth_header, 'Content-Type': 'application/json'}
+def get_bearer_token(auth_url, api_token):
+    """Function to retrieve the bearer token for authentication
+
+    Args:
+        auth_url (str): URL to retrieve the bearer token from
+        api_token (str): The api-token to authenticate with
+
+    Returns:
+        dict: Dictionary containing the bearer token
+    """
+    if not LEANIX_API_TOKEN:
+        raise Exception('A valid token is required')
+    response = requests.post(auth_url, auth=('apitoken', api_token),
+                             data={'grant_type': 'client_credentials'},
+                             timeout=TIMEOUT)
+    response.raise_for_status() 
+    access_token = response.json()['access_token']
+    auth_header = 'Bearer ' + access_token
+    header = {'Authorization': auth_header}
+    return header
   
+
 def getPanel(filters, title, chartType, tagGroupId, singleSelectField):
-  panel1 = {}
-  panel1["title"] = title
-  panel1["type"] = "CHART"
-  panel1["options"] = {"chartType": chartType, "tagGroupId": tagGroupId, "singleSelectField": singleSelectField, "filter":  getFilter(filters) }
-  return panel1
+    """Retrieves the panel
+
+    Args:
+        filters (_type_): _description_
+        title (_type_): _description_
+        chartType (_type_): _description_
+        tagGroupId (_type_): _description_
+        singleSelectField (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """  
+    panel1 = {}
+    panel1["title"] = title
+    panel1["type"] = "CHART"
+    panel1["options"] = {"chartType": chartType, "tagGroupId": tagGroupId, "singleSelectField": singleSelectField, "filter":  getFilter(filters) }
+    return panel1
+
 
 def getFilter(filters):
-  facetFilters = { "facetFilter": [{
+    """_summary_
+
+    Args:
+        filters (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """  
+    facetFilters = { "facetFilter": [{
                   "keys": [
                       "Application"
                   ],
@@ -124,25 +110,36 @@ def getFilter(filters):
                   "operator": "OR"
               }]
           }
-  for k,v in filters.items():
-    facetFilters['facetFilter'].append({"facetKey": k, "keys": [ v ], "operator": "OR"})
-  return facetFilters
+    for k,v in filters.items():
+        facetFilters['facetFilter'].append({"facetKey": k, "keys": [ v ], "operator": "OR"})
+    return facetFilters
 
-df = pd.read_excel('input.xlsx', sheetname='Worksheet', sep=';')
-file_name = './dashboards.json'
-with open(file_name, 'r') as f:
-    dashboards = json.load(f)
+
+try:
+    df = pd.read_excel('input.xlsx', sheetname='Worksheet', sep=';')
+    file_name = './dashboards.json'
+    with open(file_name, 'r') as f:
+        dashboards = json.load(f)
+
+except Exception as e:
+   logging.error(f'Failed to load input file: {e}')
+
+
+try:
+    header = get_bearer_token(LEANIX_AUTH_URL, LEANIX_API_TOKEN)
+except Exception as e:
+    logging.error(f'Error while authenticating: {e}')
 
 for d in dashboards:
-  d['singleSelectField'] = '' if not 'singleSelectField' in d else d['singleSelectField']
-  d['singleSelectField2'] = '' if not 'singleSelectField2' in d else d['singleSelectField2']
+  d['singleSelectField'] = '' if 'singleSelectField' not in d else d['singleSelectField']
+  d['singleSelectField2'] = '' if 'singleSelectField2' not in d else d['singleSelectField2']
  
-  d['tagGroupId'] = '' if not 'tagGroupId' in d else d['tagGroupId']
-  d['tagGroupId2'] = '' if not 'tagGroupId2' in d else d['tagGroupId2']
-  d['title2'] = '' if not 'title2' in d else d['title2']
+  d['tagGroupId'] = '' if 'tagGroupId' not in d else d['tagGroupId']
+  d['tagGroupId2'] = '' if 'tagGroupId2' not in d else d['tagGroupId2']
+  d['title2'] = '' if 'title2' not in d else d['title2']
   
-  d['filter'] = {} if not 'filter' in d else d['filter']
-  d['filter2'] = {} if not 'filter2' in d else d['filter2']
+  d['filter'] = {} if 'filter' not in d else d['filter']
+  d['filter2'] = {} if 'filter2' not in d else d['filter2']
 
   data = {}
   data['name'] = d['name']
@@ -179,7 +176,7 @@ for d in dashboards:
     }
 
   json_data = json.dumps(data)
-  response = requests.post(url=request_url, headers=header, data=json_data)
-
+  response = requests.post(url=LEANIX_REQUEST_URL, headers=header, data=json_data, timeout=TIMEOUT)
   response.raise_for_status()
-  print(response.json())
+
+  logging.info(response.json())

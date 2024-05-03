@@ -3,6 +3,21 @@ import requests
 import pandas as pd
 import base64
 import time
+import os
+import logging
+
+
+logging.basicConfig(level=logging.INFO)
+
+#Request timeout
+TIMEOUT = 20
+
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
+
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1'
 
 
 """

@@ -1,148 +1,107 @@
 import json 
 import requests 
-import pandas as pd
+import csv
 import os
+import logging
 
 
-#INPUT
-auth_url = "Placeholder"
-request_url = "Placeholder"
+logging.basicConfig(level=logging.INFO)
 
-api_token = input("Enter your API-Token: ")
+#Request timeout
+TIMEOUT = 20
 
-print("")
-print("Choose the instance your workspace is on:")
-print("")
-print("1. EU")
-print("2. US")
-print("3. AU")
-print("4. UK")
-print("5. DE")
-print("6. CH")
-print("7. AE")
-print("8. CA")
-print("9. BR")
-print(" ")
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 
-try:
-    choice = input("Enter your choice (1/2/3/4/5/6/7/8/9): ")
-           
-    if choice == "1":
-        instance = "eu"
-    elif choice == "2":
-        instance = "us"
-    elif choice == "3":
-        instance = "au"
-    elif choice == "4":
-        instance = "uk"
-    elif choice == "5":
-        instance = "de"
-    elif choice == "6":
-        instance = "ch"
-    elif choice == "7":
-        instance = "ae"
-    elif choice == "8":
-        instance = "ca"
-    elif choice == "9":
-        instance = "br"
-    elif choice == "10":
-        instance = "eu"
-    else:
-        print("")
-        print("Invalid choice. Please select 1, 2, 3, 4, 5, 6, 7, 8 or 9")
-        print("")
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/graphql'
 
-except ValueError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-
-try:
-    auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
-
-    if choice == "10":
-        request_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1/graphql'
-    else:
-        request_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1/graphql'
-
-except NameError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-    exit()
-
-try:
-    importchoice = input("Please indicate the file format you want to import from (csv/xlsx): ").lower()
-
-    if importchoice == "csv":
-        filetype = "csv"
-    elif importchoice == "xlsx":
-        filetype = "xlsx"
-    else:
-        print("")
-        print("Invalid choice")
-        print("")
-
-except ValueError:
-    print("")
-    print("Invalid input.")
-    print("")
-
-try:
-    filename = input("Please enter the full name of your input file: ")
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, filename)
-except ValueError:
-    print("")
-    print("Invalid input.")
-    print("")
+IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 
+#LOGIC
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
-response = requests.post(auth_url, auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
-response.raise_for_status() 
-access_token = response.json()['access_token']
-auth_header = 'Bearer ' + access_token
-header = {'Authorization': auth_header}
+def get_bearer_token(auth_url, api_token):
+    """Function to retrieve the bearer token for authentication
+
+    Args:
+        auth_url (str): URL to retrieve the bearer token from
+        api_token (str): The api-token to authenticate with
+
+    Returns:
+        dict: Dictionary containing the bearer token
+    """
+    if not LEANIX_API_TOKEN:
+        raise Exception('A valid token is required')
+    response = requests.post(auth_url, auth=('apitoken', api_token),
+                             data={'grant_type': 'client_credentials'},
+                             timeout=TIMEOUT)
+    response.raise_for_status() 
+    access_token = response.json()['access_token']
+    auth_header = 'Bearer ' + access_token
+    header = {'Authorization': auth_header}
+    return header
+
 
 # General function to call GraphQL given a query
-def call(query):
-  data = {"query" : query}
-  json_data = json.dumps(data)
-  response = requests.post(url=request_url, headers=header, data=json_data)
-  response.raise_for_status()
-  return response.json()
+def call(query, header, request_url):
+    """Function that allows the user to perform graphql queries.
+
+    Args:
+        query (str): Query the user wants to perform on his workspace.
+
+    Returns:
+        str: JSON response string for the given query.
+    """
+    data = {"query" : query}
+    json_data = json.dumps(data)
+    response = requests.post(url=request_url, headers=header, data=json_data, timeout=TIMEOUT)
+    response.raise_for_status()
+    return response.json()
+
 
 # Delete the document
-def deleteTag(id):
-  query = """
-mutation {
-  deleteTag(id: "%s") {
-    id
-  }
-}
-  """ % (id)
-  print ("delete " + id)
-  response = call(query)
-  print (response)
+def deleteTag(id, header):
+    """Query to delete a given tag.
+
+    Args:
+        id (str): ID of the tag.
+        header (dict): Authorization header
+    """    
+    query = """
+        mutation {
+        deleteTag(id: "%s") {
+            id
+        }
+    }
+     """ % (id)
+    print ("delete " + id)
+    response = call(query, header, LEANIX_REQUEST_URL)
+    logging.info(response)
+
 
 # Start of the main program
-if filetype == "csv":
+try:
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, IMPORT_FILE)
+except ValueError:
+    logging.error('Failed to parse file input')
+
+try:
+    header = get_bearer_token(LEANIX_AUTH_URL, LEANIX_API_TOKEN)
+except Exception as e:
+    logging.error(f'Error while authenticating: {e}')
+
+with open(filename) as df:
     try:
-        df = pd.read_csv(filename, sep=';')
-
+        logging.info(f'Parsing csv file: {df.name}')
+        reader = csv.DictReader(df, delimiter=';')
     except Exception as e:
-        print(e)
-        exit()
+        logging.error(f'Failed to load csv file: {e}')
 
-if filetype == "xlsx":
-    try:
-        df = pd.read_excel(filename, sheet_name='Worksheet')
-
+    try: 
+        for row in reader:
+            deleteTag(row['id'], header)
     except Exception as e:
-        print(e)
-        exit()
-  
-for index, row in df.iterrows():
-  deleteTag(row['id'])
+        logging.error(f'Error while processing tags: {e}')

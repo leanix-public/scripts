@@ -10,10 +10,12 @@ Example:
     $ python archiveFactsheets.py
 
 Attributes:
-    auth_url (str): URL to receive an authentication header.
-    request_url (str): URL to send graphql requests to.
-    api_token (str): API-Token to authenticate with.
-    header (dict): Dictionary containing the bearer token
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    IMPORT_FILE (str): Name of the import file.
 
 """
 
@@ -50,7 +52,6 @@ def get_bearer_token(auth_url, api_token):
     Returns:
         dict: Dictionary containing the bearer token
     """
-
     if not LEANIX_API_TOKEN:
         raise Exception('A valid token is required')
     response = requests.post(auth_url, auth=('apitoken', api_token),
@@ -81,7 +82,7 @@ def call(query, header, request_url):
 
 
 # Delete the subscription
-def archiveFactSheets(id, header, request_url):
+def archiveFactSheets(id, header):
     """Function to construct the query for archiving a certain factsheet.
 
     Args:
@@ -97,15 +98,12 @@ def archiveFactSheets(id, header, request_url):
     }
     """ % (id)
     print ("delete " + id)
-    response = call(query, header, request_url)
+    response = call(query, header, LEANIX_REQUEST_URL)
     print (response)
 
 
 # Start of the main program
 def main ():
-
-    auth_url = LEANIX_AUTH_URL
-    request_url = LEANIX_REQUEST_URL
     
     try:
         dirname = os.path.dirname(__file__)
@@ -114,7 +112,10 @@ def main ():
         logging.error('Failed to parse file input')
 
 
-    header = get_bearer_token(auth_url, LEANIX_API_TOKEN)
+    try:
+        header = get_bearer_token(LEANIX_AUTH_URL, LEANIX_API_TOKEN)
+    except Exception as e:
+        logging.error(f'Error while authenticating: {e}')
 
     with open(filename) as df:
         try:
@@ -125,12 +126,12 @@ def main ():
             logging.error(f'Failed to load csv file: {e}')
 
 
-    try: 
-        for row in reader:
-            archiveFactSheets(row['id'], header, request_url)
+        try: 
+            for row in reader:
+                archiveFactSheets(row['id'], header)
 
-    except Exception as e:
-        logging.error(f'Error while processing factsheets')
+        except Exception as e:
+            logging.error(f'Error while processing factsheets: {e}')
 
 
 if __name__ == "__main__":
