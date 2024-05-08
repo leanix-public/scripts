@@ -99,6 +99,7 @@ except NameError:
 
 
 def getAccessToken(api_token):
+  
   #different than callPost since it needs to send the auth_header
   response = requests.post(auth_url, auth=('apitoken', api_token),
                          data={'grant_type': 'client_credentials'})

@@ -99,6 +99,12 @@ def getIds(header):
 
 # Delete the document
 def deleteDocument(id, header):
+  """Deletes the document with the given id.
+
+  Args:
+      id (str): ID of the document to delete.
+      header (dict): Authorization header.
+  """  
   query = """
     mutation {
       deleteDocument(id: "%s") {

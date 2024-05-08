@@ -10,11 +10,10 @@
 
 import json 
 import requests 
-import pandas as pd
 import base64
-import time
 import csv
-import datetime
+import os
+import logging
 
 
 """
@@ -25,73 +24,27 @@ pathfinder_base_url = 'https://demo-eu.leanix.net/services/pathfinder/v1'
 apiToken = ""
 """
 
+
+logging.basicConfig(level=logging.INFO)
+
+#Request timeout
+TIMEOUT = 20
+
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
+
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1'
+
+IMPORT_FILE = os.getenv('IMPORT_FILE')
+
+
 #INPUT
-mtm_base_url = "Placeholder"
-pathfinder_base_url = "Placeholder"
+mtm_base_url = LEANIX_AUTH_URL
+pathfinder_base_url = LEANIX_REQUEST_URL
 
-apiToken = input("Enter your API-Token: ")
-
-print("")
-print("Choose the instance your workspace is on:")
-print("")
-print("1. EU")
-print("2. US")
-print("3. AU")
-print("4. UK")
-print("5. DE")
-print("6. CH")
-print("7. AE")
-print("8. CA")
-print("9. BR")
-print(" ")
-
-try:
-    choice = input("Enter your choice (1/2/3/4/5/6/7/8/9): ")
-           
-    if choice == "1":
-        instance = "eu"
-    elif choice == "2":
-        instance = "us"
-    elif choice == "3":
-        instance = "au"
-    elif choice == "4":
-        instance = "uk"
-    elif choice == "5":
-        instance = "de"
-    elif choice == "6":
-        instance = "ch"
-    elif choice == "7":
-        instance = "ae"
-    elif choice == "8":
-        instance = "ca"
-    elif choice == "9":
-        instance = "br"
-    elif choice == "10":
-        instance = "eu"
-    else:
-        print("")
-        print("Invalid choice. Please select 1, 2, 3, 4, 5, 6, 7, 8 or 9")
-        print("")
-
-except ValueError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-
-try:
-    mtm_base_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1' 
-
-    if choice == "10":
-        pathfinder_base_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1'
-    else:
-        pathfinder_base_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1'
-
-except NameError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-    exit()
-
+apiToken = LEANIX_API_TOKEN
 
 def getAccessToken(api_token):
   #different than callPost since it needs to send the auth_header
@@ -122,9 +75,9 @@ def callPost(request_url, header, data):
     response = requests.post(url=request_url, headers=header,  data=json.dumps(data))
     response.raise_for_status()
   except requests.exceptions.HTTPError as err:
-    print(request_url)
-    print(json.dumps(data))
-    print(err)
+    logging.info(request_url)
+    logging.info(json.dumps(data))
+    logging.info(err)
     exit
   return response.json()
 

@@ -104,12 +104,12 @@ def createUGRelation(app, bc, header) :
   call(query, header, LEANIX_REQUEST_URL)
 
 def createProcRelation(app, bc, header) :
-  """_summary_
+  """Create relation to process.
 
   Args:
-      app (_type_): _description_
-      bc (_type_): _description_
-      header (_type_): _description_
+      app (st): ID of the application the relation originates from
+      bc (st): ID of the process the relation points to.
+      header (dict): Authorization header
   """  
   query = """
     mutation {

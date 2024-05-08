@@ -65,7 +65,7 @@ def call(query, header, request_url):
 
 
 def createConstraint(fs, constrainedType, constrainedId, constrainingType, constrainingId, header) :
-    """_summary_
+    """Creates a constraint.
 
     Args:
         fs (_type_): _description_

@@ -1,94 +1,65 @@
 import json 
 import requests 
-import pandas as pd
+import os
+import logging
 
 
-#INPUT
-auth_url = "Placeholder"
-request_url = "Placeholder"
+logging.basicConfig(level=logging.INFO)
 
-api_token = input("Enter your API-Token: ")
+#Request timeout
+TIMEOUT = 20
 
-print("")
-print("Choose the instance your workspace is on:")
-print("")
-print("1. EU")
-print("2. US")
-print("3. AU")
-print("4. UK")
-print("5. DE")
-print("6. CH")
-print("7. AE")
-print("8. CA")
-print("9. BR")
-print(" ")
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 
-try:
-    choice = input("Enter your choice (1/2/3/4/5/6/7/8/9): ")
-           
-    if choice == "1":
-        instance = "eu"
-    elif choice == "2":
-        instance = "us"
-    elif choice == "3":
-        instance = "au"
-    elif choice == "4":
-        instance = "uk"
-    elif choice == "5":
-        instance = "de"
-    elif choice == "6":
-        instance = "ch"
-    elif choice == "7":
-        instance = "ae"
-    elif choice == "8":
-        instance = "ca"
-    elif choice == "9":
-        instance = "br"
-    elif choice == "10":
-        instance = "eu"
-    else:
-        print("")
-        print("Invalid choice. Please select 1, 2, 3, 4, 5, 6, 7, 8 or 9")
-        print("")
-
-except ValueError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-
-try:
-    auth_url = 'https://' + instance + '-svc.leanix.net/services/mtm/v1/oauth2/token' 
-
-    if choice == "10":
-        request_url = 'https://demo-' + instance + '-1.leanix.net/services/pathfinder/v1/graphql'
-    else:
-        request_url = 'https://' + instance + '.leanix.net/services/pathfinder/v1/graphql'
-
-except NameError:
-    print("")
-    print("Invalid input. Please enter a number.")
-    print("")
-    exit()
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/graphql'
 
 
+#LOGIC
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
-response = requests.post(auth_url, auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
-response.raise_for_status() 
-access_token = response.json()['access_token']
-auth_header = 'Bearer ' + access_token
-header = {'Authorization': auth_header}
+def get_bearer_token(auth_url, api_token):
+    """Function to retrieve the bearer token for authentication
+
+    Args:
+        auth_url (str): URL to retrieve the bearer token from
+        api_token (str): The api-token to authenticate with
+
+    Returns:
+        dict: Dictionary containing the bearer token
+    """
+    if not LEANIX_API_TOKEN:
+        raise Exception('A valid token is required')
+    response = requests.post(auth_url, auth=('apitoken', api_token),
+                             data={'grant_type': 'client_credentials'},
+                             timeout=TIMEOUT)
+    response.raise_for_status() 
+    access_token = response.json()['access_token']
+    auth_header = 'Bearer ' + access_token
+    header = {'Authorization': auth_header}
+    return header
+
 
 # General function to call GraphQL given a query
-def call(query):
-  data = {"query" : query}
-  json_data = json.dumps(data)
-  response = requests.post(url=request_url, headers=header, data=json_data)
-  response.raise_for_status()
-  return response.json()
+def call(query, header, request_url):
+    """Function that allows the user to perform graphql queries.
+
+    Args:
+        query (str): Query the user wants to perform on his workspace.
+
+    Returns:
+        str: JSON response string for the given query.
+    """
+    data = {"query" : query}
+    json_data = json.dumps(data)
+    response = requests.post(url=request_url, headers=header, data=json_data, timeout=TIMEOUT)
+    response.raise_for_status()
+    return response.json()
+
 
 # Read all existing Application - IT Component relations
-def getAllApps():
+def getAllApps(header):
   query = """
   {
     allFactSheets(factSheetType: Application) {
@@ -100,14 +71,14 @@ def getAllApps():
     }
   }
   """
-  response = call(query)
+  response = call(query, header, LEANIX_REQUEST_URL)
   apps = []
   for appNode in response['data']['allFactSheets']['edges']:
     appId = appNode['node']['id']
     apps.append(appId)
   return apps
 
-def setQualitySeal(app) :
+def setQualitySeal(app, header) :
   query = """
     mutation {
       updateFactSheet(id: "%s", 
@@ -119,16 +90,25 @@ def setQualitySeal(app) :
     }
   """ % (app)
   print("Set seal for: " + app)
-  response = call(query)
+  response = call(query, header, LEANIX_REQUEST_URL)
   print(response)
 
 # Start of the main program
+try:
+    header = get_bearer_token(LEANIX_AUTH_URL, LEANIX_API_TOKEN)
+except Exception as e:
+    logging.error(f'Error while authenticating: {e}')
 
 # 1. Get the existing factsheets from LeanIX
-apps = getAllApps()
-print(apps)
+try:
+  apps = getAllApps(header)
+  print(apps)
+except Exception as e:
+  print(f'Error while retrieving all factsheets: {e}')
 
 # 2. Update the quality sealfor each row
-for app in apps:
-  setQualitySeal(app)
-
+try:
+  for app in apps:
+    setQualitySeal(app, header)
+except Exception as e:
+  print(f'Error while setting quality seals: {e}')
