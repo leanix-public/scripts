@@ -65,6 +65,16 @@ def call(query, header, request_url):
 
 # Update the costs attribute on the existing relation
 def setQuery(fsid, path, externalid):
+    """Update the cost attribute on the existing relation.
+
+    Args:
+        fsid (str): Factsheet id.
+        path (str): Path of the relation.
+        externalid (str): External id.
+
+    Returns:
+        str: The query.
+    """    
     query = """mutation {
             updateFactSheet(id: "%s",
               patches: [{op: replace, path: \"%s\",

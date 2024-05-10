@@ -32,6 +32,14 @@ api_token = LEANIX_API_TOKEN
 
 #Authorization
 def getAccessToken(api_token):
+  """Gets the access token.
+
+  Args:
+      api_token (str): API-Token.
+
+  Returns:
+      dict: Authorization header.
+  """  
   #different than callPost since it needs to send the auth_header
   response = requests.post(mtm_base_url+"/oauth2/token", auth=('apitoken', api_token),
                          data={'grant_type': 'client_credentials'},
@@ -41,6 +49,14 @@ def getAccessToken(api_token):
   return access_token
 
 def getHeader(access_token):
+  """Retrieves authorization header.
+
+  Args:
+      access_token (str): Access token.
+
+  Returns:
+      dict: Authorization header.
+  """  
   return {'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'}
 
 # General function to call GraphQL given a query

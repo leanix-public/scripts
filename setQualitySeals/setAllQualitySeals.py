@@ -79,6 +79,12 @@ def getAllApps(header):
   return apps
 
 def setQualitySeal(app, header) :
+  """Sets the quality seal of the given factsheet.
+
+  Args:
+      app (str): ID of the application.
+      header (dict): Authorization header.
+  """  
   query = """
     mutation {
       updateFactSheet(id: "%s", 

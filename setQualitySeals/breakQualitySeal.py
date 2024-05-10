@@ -69,6 +69,15 @@ def call(query, header, request_url):
 
 # Read all existing FactSheets as per factSheetType - Modify this to break the quality Seal as per requirement.
 def getAllApps(factSheetType, header):
+  """Retrieves all applications.
+
+  Args:
+      factSheetType (str): Type of the factsheet you want to query.
+      header (dict): Authorization header.
+
+  Returns:
+      list: List of all applications.
+  """  
   query = """
   {
     allFactSheets(factSheetType: %s) {
@@ -89,6 +98,12 @@ def getAllApps(factSheetType, header):
 
 def updateFactSheet(app, header) :
   #Here we are updating a field alias , but Ideal will be to create a new field for this purpose and update the field  
+  """Function to update all factsheets.
+
+  Args:
+      app (str): IF of the application.
+      header (dict): Authorization header.
+  """  
   query = """
     mutation {
       updateFactSheet(id: "%s", 

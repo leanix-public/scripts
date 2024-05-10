@@ -45,6 +45,13 @@ apiToken = LEANIX_API_TOKEN
 
 
 def getAccessToken(api_token):
+    """Generates JSON from the access token.
+
+    Args:
+        access_token (str): Access token.
+    Returns:
+        str: Access token json.
+    """  
     api_token = api_token
     auth_url = base_url+'/services/mtm/v1/oauth2/token'
 
@@ -58,6 +65,13 @@ def getAccessToken(api_token):
 
 # Function to decipher the access_token
 def getAccessTokenJson(access_token):
+    """Generates JSON from the access token.
+
+    Args:
+          access_token (str): Access token.
+    Returns:
+          str: Access token json.
+    """  
     payload_part = access_token.split('.')[1]
     # fix missing padding for this base64 encoded string.
     # If number of bytes is not dividable by 4, append '=' until it is.
@@ -69,6 +83,11 @@ def getAccessTokenJson(access_token):
 
 # runUpdate method to update FactSheet
 def runUpdate(access_token):
+    """Runs an update for a factsheet.
+
+    Args:
+        access_token (str): Access token.
+    """    
     try:
         dirname = os.path.dirname(__file__)
         filename = os.path.join(dirname, IMPORT_FILE)
@@ -91,6 +110,15 @@ def runUpdate(access_token):
 
 # For updating an Attribute on relationship, you will need RelationshipID along with the FactSheetID and the targetFactSheet ID which we exported in exportRelationships.py
 def runMutation(factSheetId,relationId,targetId,attributeValue, access_token):
+    """Runs the mutation to alter an attribute on a relation.
+
+    Args:
+        factSheetId (str): ID of factsheet.
+        relationId (str): ID of the relation
+        targetId (str): ID of the target of the relation.
+        attributeValue (str): Value of the attribute on the relation.
+        access_token (str): Access token.
+    """    
     attribute = "technicalSuitability"
     path = "/relApplicationToITComponent/"+relationId
     logging.info(attributeValue)
@@ -110,6 +138,16 @@ def runMutation(factSheetId,relationId,targetId,attributeValue, access_token):
 
 # General function to call GraphQL given a query
 def call(request_type, query, access_token):
+    """Posts the request to GraphQL.
+
+    Args:
+        request_type (str): Type of the query.
+        query (dict): The query itself.
+        access_token (str): Access token.
+
+    Returns:
+        _type_: _description_
+    """    
     auth_header = 'Bearer ' + access_token
     header = {'Authorization': auth_header}
     request_url = base_url+'/services/pathfinder/v1/graphql'

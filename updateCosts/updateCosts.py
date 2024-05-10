@@ -63,6 +63,14 @@ def call(query, header, request_url):
 
 # Read all existing Application - IT Component relations
 def getRelations(header):
+  """Retrieves all existing application - it component relations.
+
+  Args:
+      header (dict): Authorization header.
+
+  Returns:
+      list: List of all relations.
+  """  
   query = """
   {
     allFactSheets(factSheetType: BusinessCapability) {
@@ -99,6 +107,15 @@ def getRelations(header):
 
 # Update the costs attribute on the existing relation
 def updateCosts(app, itc, rel, costs, header) :
+  """Updates the cost of an existing relation.
+
+  Args:
+      app (str): App id.
+      itc (str): ITC id.
+      rel (id): ID of the relaton.
+      costs (str): New cost.
+      header (dict): Authorization header.
+  """  
   query = """
     mutation {
       updateFactSheet(id: "%s", 

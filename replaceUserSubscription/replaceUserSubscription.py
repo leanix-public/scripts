@@ -40,6 +40,14 @@ header = {'Authorization': auth_header}
 
 # General function to call GraphQL given a query
 def call(query):
+  """Function to post a request to GraphQL.
+
+  Args:
+      query (str): The query you want to run.
+
+  Returns:
+      str: Response of the query.
+  """  
   data = {"query" : query}
   json_data = json.dumps(data)
   response = requests.post(url=request_url, headers=header, data=json_data, timeout=TIMEOUT)

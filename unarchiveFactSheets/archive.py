@@ -63,7 +63,13 @@ def call(query, header, request_url):
 
 # Delete the subscription
 def unarchiveFactSheets(id, header):
-  query = """
+    """Query to unarchive a factsheet.
+
+    Args:
+        id (str): ID of the factsheet.
+        header (dict): Authorization header.
+    """  
+    query = """
     mutation {
       updateFactSheet(id: "%s", comment: "Activate", patches: {op: replace, path: \"/status\", value: \"ACTIVE\"}, validateOnly: false) {
         factSheet {
@@ -72,9 +78,9 @@ def unarchiveFactSheets(id, header):
       }
     }
   """ % (id)
-  logging.info("recover " + id)
-  response = call(query, header, LEANIX_REQUEST_URL)
-  logging.info(response)
+    logging.info("recover " + id)
+    response = call(query, header, LEANIX_REQUEST_URL)
+    logging.info(response)
 
 
 # Start of the main program

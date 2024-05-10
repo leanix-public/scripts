@@ -62,6 +62,11 @@ def call(query, header, request_url):
 
 # Read all existing IT Components
 def getIds(header):
+  """Get the ids of all existing it components.
+
+  Args:
+      header (dict): Authorization header.
+  """  
   query = """
 {
   allFactSheets {
@@ -93,6 +98,13 @@ def getIds(header):
 
 # Delete the document
 def updateDocument(id,url, header):
+  """Delete the given document.
+
+  Args:
+      id (str): ID of the document.
+      url (str): Value to replace the URL.
+      header (dict): Authorization header.
+  """  
   query = """
     mutation {
       updateDocument(id: "%s", patches: [{path: "/url", op: replace, value: "%s"}]) {

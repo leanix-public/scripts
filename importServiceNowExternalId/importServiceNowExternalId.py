@@ -13,6 +13,14 @@ externalUrl = "https://<ServiceInstance>.service-now.com/nav_to.do?uri=<tableNam
 base_url = 'https://app.leanix.net'
 
 def getAccessToken(api_token):
+    """Retrieve access token.
+
+    Args:
+        api_token (str): API-Token to authenticate with.
+
+    Returns:
+        str: Access token.
+    """    
     api_token = api_token
     auth_url = base_url+'/services/mtm/v1/oauth2/token'
 
@@ -25,6 +33,14 @@ def getAccessToken(api_token):
 
 # Function to decipher the access_token
 def getAccessTokenJson(access_token):
+    """Function to decipher the access_token.
+
+    Args:
+        access_token (str): Access token.
+
+    Returns:
+        str: Payload that contains the access token.
+    """    
     payload_part = access_token.split('.')[1]
     # fix missing padding for this base64 encoded string.
     # If number of bytes is not dividable by 4, append '=' until it is.
@@ -36,11 +52,23 @@ def getAccessTokenJson(access_token):
 
 # runUpdate method to update ServiceNow ExternalId
 def runUpdate(access_token):
+    """Updates the ServiceNow id.
+
+    Args:
+        access_token (str): Access token.
+    """    
     df = pd.read_csv('ServiceNow.csv', sep=';')
     for index, row in df.iterrows():
         runMutation(row['id'], access_token,row['serviceNowExternalId'])
 
 def runMutation(factSheetId, access_token, serviceNowExternalId):
+    """Runs the actual mutation to update the ServiceNow ids.
+
+    Args:
+        factSheetId (str): Factsheet that contains the ServiceNow id.
+        access_token (str): Access token.
+        serviceNowExternalId (str): New id.
+    """    
     status = "LINKED"
     serviceNowUrl = externalUrl+serviceNowExternalId
    # tags.append(tagId)
@@ -63,6 +91,16 @@ def runMutation(factSheetId, access_token, serviceNowExternalId):
 
 # General function to call GraphQL given a query
 def call(request_type, query, access_token):
+    """Call GraphQL with a given query.
+
+    Args:
+        request_type (str): Type of query you want to perform.
+        query (str): The query you want to perform.
+        access_token (str): Access token.
+
+    Returns:
+        str: Response to the given query.
+    """    
     auth_header = 'Bearer ' + access_token
     header = {'Authorization': auth_header}
     request_url = base_url+'/services/pathfinder/v1/graphql'

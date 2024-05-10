@@ -62,6 +62,11 @@ def call(query, header, request_url):
 
 
 def createRelations(mapping):
+  """Create relations from the given mapping.
+
+  Args:
+      mapping (dict): Mapping of the relations.
+  """  
   for key, value in mapping.items():
     idx = 1
     patches = []
@@ -72,6 +77,12 @@ def createRelations(mapping):
     updateRelations(key, ",".join(patches))
 
 def deleteRelations(id, relations):
+  """Delete the given relation.
+
+  Args:
+      id (str): ID of the relation.
+      relations (list): List of relations.
+  """  
   patches = []
   logging.info(relations)
   for v in relations:
@@ -82,6 +93,13 @@ def deleteRelations(id, relations):
 
 # Function to create a relation between Application and IT Component with the costs attribute
 def updateRelations(itc, patches, header) :
+  """Function to create a relation between an application and an it component with the given cost attribute.
+
+  Args:
+      itc (str): ID of the it component.
+      patches (str): Patches to create the relations.
+      header (dict): Authorization header.
+  """  
   query = """
      mutation {
       updateFactSheet(id: "%s", 
@@ -96,6 +114,11 @@ def updateRelations(itc, patches, header) :
   logging.info(call(query, header, LEANIX_REQUEST_URL))
 
 def deleteExistingRelations(header):
+  """Function to delete relations.
+
+  Args:
+      header (dict): Authorization header.
+  """  
   query = """
 {
   allFactSheets(filter: {facetFilters: [{facetKey: "FactSheetTypes", keys: ["ITComponent"]}, {facetKey: "relITComponentToTechnologyStack", keys: ["27c1158c-6ea6-4ab3-90e6-fe16dafa8e42"]}]}) {
