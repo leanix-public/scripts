@@ -117,7 +117,7 @@ def fixConstraints(header, fsType='Project', rel='relProjectToBusinessCapability
         for constrainRelFs in fsNode['node'][constrainingRel]['edges']: # eg: User Group
           constrainRelFsId = constrainRelFs['node']['factSheet']['id']
           constrainRelFsName = constrainRelFs['node']['factSheet']['name']
-          print("""Creating constrinaning relation for '%s' between '%s' and '%s'""" %(fsName, relFsName, constrainRelFsName))
+          logging.info("""Creating constrinaning relation for '%s' between '%s' and '%s'""" %(fsName, relFsName, constrainRelFsName))
           createConstraint(fsId, rel, relFsId, constrainingRel, constrainRelFsId, header)
 
    

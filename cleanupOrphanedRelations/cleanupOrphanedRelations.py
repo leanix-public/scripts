@@ -120,9 +120,9 @@ def update(app, comment, patches, header) :
       }
     }
   """ % (app, comment, patches)
-  print(comment + ":" + app)
+  logging.info(comment + ":" + app)
   response = call(query, header, LEANIX_REQUEST_URL)
-  print(response)
+  logging.info(response)
 
 
 # Start of the main program

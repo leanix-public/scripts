@@ -97,9 +97,9 @@ def archiveFactSheets(id, header):
       }
     }
     """ % (id)
-    print ("delete " + id)
+    logging.info("delete " + id)
     response = call(query, header, LEANIX_REQUEST_URL)
-    print (response)
+    logging.info(response)
 
 
 # Start of the main program

@@ -28,7 +28,7 @@ api_token = LEANIX_API_TOKEN
 def getAccessToken(api_token):
   #different than callPost since it needs to send the auth_header
   response = requests.post(mtm_base_url+"/oauth2/token", auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
+                         data={'grant_type': 'client_credentials'}, timeout=TIMEOUT)
   response.raise_for_status() 
   access_token = response.json()['access_token']
   return access_token
@@ -60,7 +60,7 @@ def getTimeTags():
     query = queries.getTimeTagsQuery()
     status, result = callGraphQL(query, getAccessToken(api_token))
     if not (status == 200 and result['errors'] is None):
-        print("Error in mapping the Time Model tags.")
+        logging.error("Error in mapping the Time Model tags.")
         exit(9)
     tagMapping = {}
     for tagNode in result['data']['allTags']['edges']:
@@ -136,4 +136,4 @@ for appNode in allApplications['data']['allFactSheets']['edges']:
             application['id'], application['rev'], getTagPatchesValues(application["tags"], tag))
         if results["errors"] is None:
             results['data']['result']
-            print(status, " - ", json.dumps(results['data']['result']))
+            logging.info(status, " - ", json.dumps(results['data']['result']))

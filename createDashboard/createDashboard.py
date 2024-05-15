@@ -1,6 +1,6 @@
 import json 
 import requests 
-import pandas as pd
+import csv
 import os
 import logging
 
@@ -116,7 +116,14 @@ def getFilter(filters):
 
 
 try:
-    df = pd.read_excel('input.xlsx', sheetname='Worksheet', sep=';')
+    with open('input.csv') as df:
+        try:
+            logging.info(f'Parsing csv file: {df.name}')
+            reader = csv.DictReader(df, delimiter=';')
+
+        except Exception as e:
+            logging.error(f'Failed to load csv file: {e}')
+
     file_name = './dashboards.json'
     with open(file_name, 'r') as f:
         dashboards = json.load(f)
@@ -151,7 +158,7 @@ for d in dashboards:
 
   if (not d['title2']):
     column = columnLeft
-    for index, row in df.iterrows():
+    for row in reader:
       d['filter']['relApplicationToOwningUserGroup'] = row['id']
       column["rows"][0]["panels"].append(getPanel(d['filter'], row['name'] + " - " + d['title'], d['type'], d['tagGroupId'], d['singleSelectField']))
       if (column == columnLeft):
@@ -159,7 +166,7 @@ for d in dashboards:
       else:
         column = columnLeft
   else: 
-    for index, row in df.iterrows():
+    for row in reader:
       d['filter']['relApplicationToOwningUserGroup'] = row['id']
       columnLeft["rows"][0]["panels"].append(getPanel(d['filter'], row['name'] + " - " + d['title'], d['type'], d['tagGroupId'], d['singleSelectField']))
       d['filter2']['relApplicationToOwningUserGroup'] = row['id']

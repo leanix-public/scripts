@@ -76,7 +76,7 @@ def deleteTag(id, header):
         }
     }
      """ % (id)
-    print ("delete " + id)
+    logging.info("delete " + id)
     response = call(query, header, LEANIX_REQUEST_URL)
     logging.info(response)
 

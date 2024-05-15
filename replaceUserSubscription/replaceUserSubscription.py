@@ -105,7 +105,7 @@ def getAllSubscriptions(user):
     endCursor = first['data']['allFactSheets']['pageInfo']['endCursor']
     first = getSubscriptionPage(endCursor)
     subscriptions.append(extractSubscriptions(first,user))
-  print(len(subscriptions))
+  logging.info(len(subscriptions))
   return subscriptions
 
 def getRoles(fsId, user):
@@ -143,9 +143,9 @@ def createSubscription(fsId, user, type, roles) :
     }
   }
   """ % (fsId, user, type, roles)
-  print("Create new subscription for: " + fsId)
+  logging.info("Create new subscription for: " + fsId)
   response = call(query)
-  print(response)
+  logging.info(response)
 
 def deleteSubscription(id, fsId) :
   query = """
@@ -155,9 +155,9 @@ def deleteSubscription(id, fsId) :
     }
   }
   """ % (id)
-  print("Delete old subscription for: " + fsId)
+  logging.info("Delete old subscription for: " + fsId)
   response = call(query)
-  print(response)
+  logging.info(response)
 
 def updateSubscription(subscription, oldUser, newUser):
   roles = []

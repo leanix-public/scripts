@@ -95,9 +95,9 @@ def setQualitySeal(app, header) :
       }
     }
   """ % (app)
-  print("Set seal for: " + app)
+  logging.info("Set seal for: " + app)
   response = call(query, header, LEANIX_REQUEST_URL)
-  print(response)
+  logging.info(response)
 
 # Start of the main program
 try:
@@ -108,13 +108,13 @@ except Exception as e:
 # 1. Get the existing factsheets from LeanIX
 try:
   apps = getAllApps(header)
-  print(apps)
+  logging.info(apps)
 except Exception as e:
-  print(f'Error while retrieving all factsheets: {e}')
+  logging.error(f'Error while retrieving all factsheets: {e}')
 
 # 2. Update the quality sealfor each row
 try:
   for app in apps:
     setQualitySeal(app, header)
 except Exception as e:
-  print(f'Error while setting quality seals: {e}')
+  logging.error(f'Error while setting quality seals: {e}')

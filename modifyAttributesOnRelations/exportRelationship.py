@@ -57,7 +57,8 @@ def getAccessToken(api_token):
   """  
   #different than callPost since it needs to send the auth_header
   response = requests.post(mtm_base_url+"/oauth2/token", auth=('apitoken', api_token),
-                                        data={'grant_type': 'client_credentials'})
+                                        data={'grant_type': 'client_credentials'},
+                                        timeout=TIMEOUT)
   response.raise_for_status() 
   access_token = response.json()['access_token']
   return access_token
@@ -105,7 +106,7 @@ def callPost(request_url, header, data):
       dict: Response of the request.
   """  
   try:
-    response = requests.post(url=request_url, headers=header,  data=json.dumps(data))
+    response = requests.post(url=request_url, headers=header,  data=json.dumps(data), timeout=TIMEOUT)
     response.raise_for_status()
   except requests.exceptions.HTTPError as err:
     logging.info(request_url)
