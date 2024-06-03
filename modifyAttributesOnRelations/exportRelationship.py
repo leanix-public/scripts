@@ -7,6 +7,22 @@
 # 2. Adapt pathfinder_base_url and apiToken
 # 3. Modify the query in getRelationVariablesToExport and include the attributes as per requirement.
 # 4. Also modify the CSV writer and newObject to include your attributes.
+# -*- coding: utf-8 -*-
+"""Script for exporting relations.
+
+This script allows the user to export relations.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python exportRelationship.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+
+"""
 
 import json 
 import requests 
@@ -36,8 +52,6 @@ LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 
 LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1' 
 LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1'
-
-IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 
 #INPUT

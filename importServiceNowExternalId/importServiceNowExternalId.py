@@ -1,3 +1,22 @@
+# -*- coding: utf-8 -*-
+"""Script for importing ServiceNow ids.
+
+This script allows the user to import ServiceNow ids and set them as the external id.
+The necessary information is given in the import file.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importServiceNowExternalI.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    IMPORT_FILE (str): Name of the import file.
+
+"""
+
 import json
 import requests
 import base64
@@ -123,7 +142,7 @@ def call(request_type, query, access_token):
     Returns:
         str: Response to the given query.
     """    
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     request_url = base_url+'/services/pathfinder/v1/graphql'
     data = {request_type: query}

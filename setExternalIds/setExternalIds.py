@@ -1,3 +1,21 @@
+# -*- coding: utf-8 -*-
+"""Script for setting external ids.
+
+This script allows the user to set the external ids of factsheets.
+The necessary information is indicated in the import file.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> FACTSHEET_ID=<> PATH=<> EXTERNAL_ID=<> python setExternalIds.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+
+"""
+
 import json
 import requests
 import os
@@ -41,7 +59,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 
@@ -98,6 +116,6 @@ except Exception as e:
 try:
     query = setQuery(FACTSHEET_ID, PATH, FACTSHEET_ID)
     response = call(query, header, LEANIX_REQUEST_URL)
-    logging.info(response)
+    logging.debug(response)
 except Exception as e:
     logging.error(f'Error while parsing query: {e}')

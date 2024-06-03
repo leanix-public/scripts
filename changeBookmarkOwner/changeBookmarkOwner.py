@@ -1,3 +1,22 @@
+# -*- coding: utf-8 -*-
+"""Script for changing bookmark owner.
+
+This script allows the user to change the owner of a bookmark.
+Changes are indicated in a given input file.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python changeBookmarkOwner.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    IMPORT_FILE (str): Name of the import file.
+
+"""
+
 import json
 import requests
 import csv
@@ -44,7 +63,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 
@@ -73,7 +92,7 @@ def updateBookmark(id, data, header):
         header (dict): Authorization header.
 
     Returns:
-        _type_: _description_
+        json: Response of the query.
     """    
     response = requests.put(url=request_url+"/"+id, headers=header, data=data, timeout=TIMEOUT)
     return response.json()

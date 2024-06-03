@@ -1,3 +1,20 @@
+# -*- coding: utf-8 -*-
+"""Script for cleaning up orphaned relations.
+
+This script allows the user to cleanup every orphaned Relation.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python cleanupOrphanedRelations.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+
+"""
+
 import json 
 import requests 
 import os
@@ -36,7 +53,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 
@@ -122,7 +139,7 @@ def update(app, comment, patches, header) :
   """ % (app, comment, patches)
   logging.info(comment + ":" + app)
   response = call(query, header, LEANIX_REQUEST_URL)
-  logging.info(response)
+  logging.debug(response)
 
 
 # Start of the main program

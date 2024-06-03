@@ -1,3 +1,21 @@
+# -*- coding: utf-8 -*-
+"""Script for breaking quality seals.
+
+This script allows the user to break quality seals.
+It queries all factsheets of the given type and breaks their quality seal.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> FACTSHEET_TYPE=<> python breakQualitySeal.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+
+"""
+
 import json 
 import requests 
 import os
@@ -45,7 +63,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 
@@ -115,7 +133,7 @@ def updateFactSheet(app, header) :
     }
   """ % (app)
   response = call(query, header, LEANIX_REQUEST_URL)
-  logging.info(response)
+  logging.debug(response)
 
 # Start of the main program
 try:
@@ -126,7 +144,6 @@ except Exception as e:
 # 1. Get the existing factsheets from LeanIX
 try:
   apps = getAllApps(FACTSHEET_TYPE, header)
-  logging.info(apps)
 except Exception as e:
   logging.error(f'Error while retrieving all factsheets: {e}')
 

@@ -1,4 +1,20 @@
 # -*- coding: utf-8 -*-
+"""Script for updating subscription comments.
+
+This script changes the comment of every active subscription to the description of the subscription type.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python changeSubscriptionComment.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+
+"""
+
 import json 
 import requests 
 import os
@@ -37,7 +53,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 
@@ -106,10 +122,18 @@ def updateSubscription(id, type, role_id, role_comment, user_id, header):
     """ % (id, type, role_id, role_comment, user_id)
 
     response = call(query, header, LEANIX_REQUEST_URL)
-    logging.info(response)
+    logging.debug(response)
 
 
 def getAllSubscriptions(header):
+    """Query to retrieve every subscription.
+
+    Args:
+        header (dict): _description_
+
+    Returns:
+        _type_: _description_
+    """    
     query = """
     query MyQuery {
       allFactSheets {

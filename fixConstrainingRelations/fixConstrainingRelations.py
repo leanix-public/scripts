@@ -1,3 +1,24 @@
+# -*- coding: utf-8 -*-
+"""Script for fixing constraining relations.
+
+This script allows the user to fix constraining relations.
+The relations to fix are indicated in the global variables.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> FACTSHEET_TYPE=<> RELATIONSHIP=<> CONSTRAINING_RELATIONSHIP=<> python fixConstrainingRelations.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    FACTSHEET_TYPE (str): Type of the factsheet.
+    RELATIONSHIP (str): The type of the relationship.
+    CONSTRAINING_RELATIONSHIP (str): The type of the constraining relationship.
+
+"""
+
 import json 
 import requests
 import logging
@@ -15,8 +36,6 @@ LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 
 LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
 LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/graphql'
-
-IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 FACTSHEET_TYPE = os.getenv('FACTSHEET_TYPE')
 RELATIONSHIP = os.getenv('RELATIONSHIP')
@@ -42,7 +61,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 

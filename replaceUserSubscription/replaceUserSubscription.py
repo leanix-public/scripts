@@ -1,3 +1,23 @@
+# -*- coding: utf-8 -*-
+"""Script for replacing user subscriptions.
+
+This script allows the user to replace user subscriptions.
+The old and new users are indicated in the global variables.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> NEW_USER=<> OLD_USER=<> python replaceUserSubscription.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    NEW_USER (str): E-Mail of the new user.
+    OLD_USER (str): E-Mail of the old user.
+
+"""
+
 import json 
 import requests 
 import os
@@ -35,7 +55,7 @@ response = requests.post(auth_url, auth=('apitoken', api_token),
                          data={'grant_type': 'client_credentials'})
 response.raise_for_status() 
 access_token = response.json()['access_token']
-auth_header = 'Bearer ' + access_token
+auth_header = f'Bearer {access_token}'
 header = {'Authorization': auth_header}
 
 # General function to call GraphQL given a query
@@ -105,7 +125,6 @@ def getAllSubscriptions(user):
     endCursor = first['data']['allFactSheets']['pageInfo']['endCursor']
     first = getSubscriptionPage(endCursor)
     subscriptions.append(extractSubscriptions(first,user))
-  logging.info(len(subscriptions))
   return subscriptions
 
 def getRoles(fsId, user):
@@ -145,7 +164,7 @@ def createSubscription(fsId, user, type, roles) :
   """ % (fsId, user, type, roles)
   logging.info("Create new subscription for: " + fsId)
   response = call(query)
-  logging.info(response)
+  logging.debug(response)
 
 def deleteSubscription(id, fsId) :
   query = """
@@ -157,7 +176,7 @@ def deleteSubscription(id, fsId) :
   """ % (id)
   logging.info("Delete old subscription for: " + fsId)
   response = call(query)
-  logging.info(response)
+  logging.debug(response)
 
 def updateSubscription(subscription, oldUser, newUser):
   roles = []

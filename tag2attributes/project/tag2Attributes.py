@@ -5,12 +5,6 @@ import os
 import logging
 
 
-"""
-mtm_base_url = 'https://svc.leanix.net/services/mtm/v1' 
-pathfinder_base_url = 'https://abc.leanix.net/services/pathfinder/v1'
-"""
-
-
 logging.basicConfig(level=logging.INFO)
 
 #Request timeout
@@ -145,4 +139,4 @@ with open('mapping.csv') as df:
       """ % (appNode['node']['id'], ",".join(patches))
     logging.info(query)
     response = callGraphQL(query, access_token)
-    logging.info(response)
+    logging.debug(response)

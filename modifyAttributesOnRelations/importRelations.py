@@ -5,6 +5,24 @@
 # 1. Provide : apiToken and adapt the base_url as per your instance.
 # 2. Modify the runUpdate as per the requirement.
 # 3. Test the script in Sandbox and on a small amount of data before making the bulk changes.
+# -*- coding: utf-8 -*-
+"""Script for importing relations.
+
+This script allows the user to import relations.
+The necessary information is given in the import file.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importRelations.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    IMPORT_FILE (str): Name of the import file.
+
+"""
 
 import json
 import requests
@@ -148,7 +166,7 @@ def call(request_type, query, access_token):
     Returns:
         _type_: _description_
     """    
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     request_url = base_url+'/services/pathfinder/v1/graphql'
     data = {request_type: query}

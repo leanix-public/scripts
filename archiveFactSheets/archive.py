@@ -7,9 +7,9 @@ upon successful completion of the script. This script also uses cli inputs
 to gather all the necessary information.
 
 Example:
-    $ python archiveFactsheets.py
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python archiveFactsheets.py
 
-Attributes:
+Global variables:
     TIMEOUT (int): Timeout for requests.
     LEANIX_API_TOKEN (str): API-Token to authenticate with.
     LEANIX_SUBDOMAIN (str): LeanIX subdomain.
@@ -59,7 +59,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 
@@ -97,9 +97,9 @@ def archiveFactSheets(id, header):
       }
     }
     """ % (id)
-    logging.info("delete " + id)
+    logging.info(f'Archiving fact sheet with id: {id}')
     response = call(query, header, LEANIX_REQUEST_URL)
-    logging.info(response)
+    logging.debug(response)
 
 
 # Start of the main program

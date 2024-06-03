@@ -1,3 +1,22 @@
+# -*- coding: utf-8 -*-
+"""Script for updating ITCRelations.
+
+This script allows the user to update itcomponent relations.
+The new relations are indicated in the import file.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python import.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    IMPORT_FILE (str): Name of the import file.
+
+"""
+
 import json 
 import requests 
 import csv
@@ -39,7 +58,7 @@ def get_bearer_token(auth_url, api_token):
                              timeout=TIMEOUT)
     response.raise_for_status() 
     access_token = response.json()['access_token']
-    auth_header = 'Bearer ' + access_token
+    auth_header = f'Bearer {access_token}'
     header = {'Authorization': auth_header}
     return header
 
@@ -84,7 +103,6 @@ def deleteRelations(id, relations):
       relations (list): List of relations.
   """  
   patches = []
-  logging.info(relations)
   for v in relations:
     patches.append("{op: remove, path: \"/relToRequiredBy/" + str(v) +"\"}")
   logging.info(patches)
