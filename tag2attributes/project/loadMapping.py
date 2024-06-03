@@ -1,23 +1,39 @@
 import json 
 import requests 
-import pandas as pd
+import os
+import logging
 
 import itertools
 import csv
 
+
+logging.basicConfig(level=logging.INFO)
+
+#Request timeout
+TIMEOUT = 20
+
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
+
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1'
+
+"""
 mtm_base_url = 'https://svc.leanix.net/services/mtm/v1' 
 pathfinder_base_url = 'https://adidas.leanix.net/services/pathfinder/v1'
+"""
+
+mtm_base_url = LEANIX_AUTH_URL
+pathfinder_base_url = LEANIX_REQUEST_URL
+api_token = LEANIX_API_TOKEN
+
 
 #Authorization
-def getApiToken():
-  with open('../access.json') as json_file:  
-    data = json.load(json_file)
-    return data['apitoken']
-
 def getAccessToken(api_token):
   #different than callPost since it needs to send the auth_header
   response = requests.post(mtm_base_url+"/oauth2/token", auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
+                         data={'grant_type': 'client_credentials'}, timeout=TIMEOUT)
   response.raise_for_status() 
   access_token = response.json()['access_token']
   return access_token
@@ -31,13 +47,13 @@ def callGraphQL(query, access_token):
   data = {"query" : query}
   json_data = json.dumps(data)
   #print("request")
-  response = requests.post(url=pathfinder_base_url + '/graphql', headers=getHeader(access_token), data=json_data)
+  response = requests.post(url=pathfinder_base_url + '/graphql', headers=getHeader(access_token), data=json_data, timeout=TIMEOUT)
   response.raise_for_status()
   #print("requested")
   return response.json()
 
 def call(url, access_token):
-  response = requests.get(url=pathfinder_base_url + '/' + url, headers=getHeader(access_token))
+  response = requests.get(url=pathfinder_base_url + '/' + url, headers=getHeader(access_token), timeout=TIMEOUT)
   response.raise_for_status()
   return response.json()
 
@@ -83,7 +99,7 @@ def getAttributes(access_token):
 
 # Start of the main program
 
-access_token = getAccessToken(getApiToken())
+access_token = getAccessToken(api_token)
 
 with open('mapping.csv', 'w') as csvfile:
   writer = csv.writer(csvfile, delimiter=';')

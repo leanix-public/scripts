@@ -1,53 +1,121 @@
+# -*- coding: utf-8 -*-
+"""Script for setting external ids.
+
+This script allows the user to set the external ids of factsheets.
+The necessary information is indicated in the import file.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> FACTSHEET_ID=<> PATH=<> EXTERNAL_ID=<> python setExternalIds.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+
+"""
+
 import json
 import requests
-import pandas as pd
+import os
+import logging
 
-api_token = '<API-TOKEN>'
-auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token'
-request_url = 'https://app.leanix.net/services/pathfinder/v1/graphql'
 
+logging.basicConfig(level=logging.INFO)
+
+#Request timeout
+TIMEOUT = 20
+
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
+
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/graphql'
+
+
+FACTSHEET_ID = os.getenv('FACTSHEET_ID')
+PATH = os.getenv('PATH')
+EXTERNAL_ID = os.getenv('EXTERNAL_ID')
+
+
+#LOGIC
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
-response = requests.post(auth_url, auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
-response.raise_for_status()
-access_token = response.json()['access_token']
-auth_header = 'Bearer ' + access_token
-header = {'Authorization': auth_header}
+def get_bearer_token(auth_url, api_token):
+    """Function to retrieve the bearer token for authentication
+
+    Args:
+        auth_url (str): URL to retrieve the bearer token from
+        api_token (str): The api-token to authenticate with
+
+    Returns:
+        dict: Dictionary containing the bearer token
+    """
+    if not LEANIX_API_TOKEN:
+        raise Exception('A valid token is required')
+    response = requests.post(auth_url, auth=('apitoken', api_token),
+                             data={'grant_type': 'client_credentials'},
+                             timeout=TIMEOUT)
+    response.raise_for_status() 
+    access_token = response.json()['access_token']
+    auth_header = f'Bearer {access_token}'
+    header = {'Authorization': auth_header}
+    return header
 
 
 # General function to call GraphQL given a query
-def call(query):
-    data = {"query": query}
+def call(query, header, request_url):
+    """Function that allows the user to perform graphql queries.
+
+    Args:
+        query (str): Query the user wants to perform on his workspace.
+
+    Returns:
+        str: JSON response string for the given query.
+    """
+    data = {"query" : query}
     json_data = json.dumps(data)
-    response = requests.post(url=request_url, headers=header, data=json_data)
+    response = requests.post(url=request_url, headers=header, data=json_data, timeout=TIMEOUT)
+    response.raise_for_status()
     return response.json()
 
 
 # Update the costs attribute on the existing relation
-def setQuery():
-    query = """
-          mutation {
-        updateFactSheet(id: "28fe4aa2-6e46-41a1-a131-72afb3acf256"
-          patches: [{op: add, path: "/myJensExternalId",
-            value: "{\"externalId\": \"10000\", \"forceWrite\": true}"}]
-         
-        ) {
-          factSheet {
-            ... on Application {
-              myJensExternalId {
-                externalId
-              }
-            }
+def setQuery(fsid, path, externalid):
+    """Update the cost attribute on the existing relation.
+
+    Args:
+        fsid (str): Factsheet id.
+        path (str): Path of the relation.
+        externalid (str): External id.
+
+    Returns:
+        str: The query.
+    """    
+    query = """mutation {
+            updateFactSheet(id: "%s",
+              patches: [{op: replace, path: \"%s\",
+                value: \"{\\\"externalId\\\": \\\"%s\\\", \\\"forceWrite\\\": true}\"}] ) {
+                  factSheet {
+                    displayName
+                  }
+                }
           }
-        }
-      }
-        """
+        """%(fsid, path, externalid)
     return query
 
 
 # Start of the main program
+try:
+    header = get_bearer_token(LEANIX_AUTH_URL, LEANIX_API_TOKEN)
+except Exception as e:
+    logging.error(f'Error while authenticating: {e}')
 
 # 1. Read the input
-query = setQuery()
-response = call(query)
-print(response)
+try:
+    query = setQuery(FACTSHEET_ID, PATH, FACTSHEET_ID)
+    response = call(query, header, LEANIX_REQUEST_URL)
+    logging.debug(response)
+except Exception as e:
+    logging.error(f'Error while parsing query: {e}')
