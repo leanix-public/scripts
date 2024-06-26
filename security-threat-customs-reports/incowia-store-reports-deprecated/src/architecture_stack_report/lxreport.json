@@ -1,0 +1,9 @@
+{
+    "name": "architecturestack",
+    "version": "4.1.0",
+    "author": "LeanIX GmbH & incowia GmbH",
+    "description": "Shows a matrix that is build based on the attributes and/or tags of factsheets.",
+    "id": "net.leanix.architecturestack",
+    "title": "Architecture Stack",
+    "defaultConfig": {}
+}

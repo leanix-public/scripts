@@ -1,0 +1,9 @@
+{
+    "name": "applicationcontext",
+    "version": "1.2.3",
+    "author": "incowia GmbH",
+    "description": "This custom report shows all applications of the workspace, their connections to each other with additional information.",
+    "id": "de.incowia.applicationcontext",
+    "title": "Application Context",
+    "defaultConfig": {}
+}

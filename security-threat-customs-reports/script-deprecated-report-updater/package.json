@@ -1,0 +1,17 @@
+{
+  "name": "script-custom-report-updater",
+  "version": "1.0.0",
+  "description": "Updates a custom report to the latest available version in the Store",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "install": "./.venv/bin/pip install -r ./src/requirements.txt",
+    "update:requirements": "./.venv/bin/pip freeze > ./src/requirements.txt",
+    "start": "./.venv/bin/python ./src/main.py",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "paulo.santos@leanix.net",
+  "license": "ISC"
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<meta name="application-name" content="completionoverview">
+		<meta name="description" content="Shows an overview of the completion of factsheets.">
+		<meta name="author" content="incowia GmbH">
+
+		<title>Completion Overview</title>
+		<script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6,Array.prototype.includes"></script>
+		<style>
+			/*
+			 * ref-hack for bootstrap 3.3.7 glyphicons
+			 * leanIX doesn't allow loading font files from report files (uploaded/deployed report)
+			 * therefore the report needs to get the font files from somewhere else
+			 */
+			@font-face {
+				font-family: "Glyphicons Halflings";
+				src: url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot");
+				src: url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"),
+					url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff2") format("woff2"),
+					url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff") format("woff"),
+					url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf") format("truetype"),
+					url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+			}
+		</style>
+	</head>
+	<body>
+		<div id="report"></div>
+	<script type="text/javascript" src="report.70c2d4c189d86b5ecc21.js"></script></body>
+</html>
