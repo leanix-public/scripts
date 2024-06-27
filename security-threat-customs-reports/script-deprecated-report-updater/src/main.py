@@ -132,11 +132,11 @@ for installation in installations:
             )
         except requests.exceptions.HTTPError as err:
             if err.response.status_code == 404:
-                logging.warning('Seems that workspace {region} {workspace_id} does not exist, please confirm it personally!'.format(region=region.upper(), workspace_id=workspace_id))
+                logging.warning('Seems that workspace {region} {workspace_id} does not exist, please confirm it manually!'.format(region=region.upper(), workspace_id=workspace_id))
                 attempts = max_attemps
                 continue
             if err.response.status_code == 403:
-                logging.warning('Could not login into workspace {region} {workspace_id}, please check it personally!'.format(region=region.upper(), workspace_id=workspace_id))
+                logging.warning('Could not login into workspace {region} {workspace_id}, please check it manually!'.format(region=region.upper(), workspace_id=workspace_id))
                 attempts = max_attemps
                 continue
             if err.response.status_code == 401:
@@ -169,11 +169,19 @@ for installation in installations:
                 reports_to_be_deleted.append(report['id'])
         if needs_upgrade == True:
             logging.info('{prefix}: Upgrading the report {report_id} v{version}'.format(prefix=prefix, report_id=report_id, version=report_version))
-            new_report_id = upload_bundle(filepath=filepath, bearer=bearer)
-            workspace_reports_index = build_workspace_reports_index(bearer)
-            report = workspace_reports_index[new_report_id]
-            logging.info('{prefix}: Enabling the report {report_id} v{version}'.format(prefix=prefix, report_id=report_id, version=report_version))
-            enable_asset_version_on_workspace(new_report_id, report, bearer)
+            try:
+                new_report_id = upload_bundle(filepath=filepath, bearer=bearer)
+                workspace_reports_index = build_workspace_reports_index(bearer)
+                report = workspace_reports_index[new_report_id]
+                logging.info('{prefix}: Enabling the report {report_id} v{version}'.format(prefix=prefix, report_id=report_id, version=report_version))
+                enable_asset_version_on_workspace(new_report_id, report, bearer)
+            except requests.exceptions.HTTPError as err:
+                if err.response.status_code == 403:
+                    logging.warning('{prefix}: Error while uploading report, please check the workspace state manually.'.format(prefix=prefix))
+                    continue
+                else:
+                    raise err
+           
         if len(reports_to_be_deleted) > 0:
             logging.info('{prefix}: Uninstalling {count} obsolete report versions...'.format(prefix=prefix, count=len(reports_to_be_deleted)))
         else:
