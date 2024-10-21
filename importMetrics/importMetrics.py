@@ -1,42 +1,111 @@
-import json 
+# -*- coding: utf-8 -*-
+"""Script for importing metrics.
+
+This script allows the user to import metrics.
+The metrics are indicated in the import file.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importMetrics.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    LEANIX_REQUEST_URL (str): URL to send graphql requests to.
+    IMPORT_FILE (str): Name of the import file.
+
+"""
+
 import requests 
-import pandas as pd
+import csv
+import os
+import logging
 
-api_token = '<API-Token>'
-ws_id = 'JEMDemo'
-auth_url = 'https://app.leanix.net/services/mtm/v1/oauth2/token' 
-request_url = 'https://app.leanix.net/services/metrics/v2' 
 
+logging.basicConfig(level=logging.INFO)
+
+#Request timeout
+TIMEOUT = 20
+
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
+
+LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/metrics/v2'
+
+IMPORT_FILE = os.getenv('IMPORT_FILE')
+ 
+
+#LOGIC
 # Get the bearer token - see https://dev.leanix.net/v4.0/docs/authentication
-response = requests.post(auth_url, auth=('apitoken', api_token),
-                         data={'grant_type': 'client_credentials'})
-response.raise_for_status() 
-access_token = response.json()['access_token']
-auth_header = 'Bearer ' + access_token
-header = {'Authorization': auth_header, 'Content-Type': 'application/json'}
-  
-df = pd.read_excel('input.xlsx', sheet_name='Worksheet')
-schema_name = df["measurement"].tolist()[0]
-keys = df["key"].unique().tolist()
-attributes = [{"name": key, "type": "metric"} for key in keys] + [{"name": "factSheetId", "type": "dimension"}]
-schema = {
-  "name": schema_name,
-  "description": "Daily costs for cloud resources.",
-  "attributes": attributes
-}
-response = requests.post(url=f"{request_url}/schemas", headers=header, json=schema)
-schema_uuid = response.json()["uuid"]
-for index, row in df.iterrows():
-  
-  data = {
-      "timestamp": row['date'].strftime('%Y-%m-%d') + "T00:00:00.000Z",
-      "factSheetId": row["factSheetId"],
-      row['key']: row['value']
+def get_bearer_token(auth_url, api_token):
+    """Function to retrieve the bearer token for authentication
+
+    Args:
+        auth_url (str): URL to retrieve the bearer token from
+        api_token (str): The api-token to authenticate with
+
+    Returns:
+        dict: Dictionary containing the bearer token
+    """
+    if not LEANIX_API_TOKEN:
+        raise Exception('A valid token is required')
+    response = requests.post(auth_url, auth=('apitoken', api_token),
+                             data={'grant_type': 'client_credentials'},
+                             timeout=TIMEOUT)
+    response.raise_for_status() 
+    access_token = response.json()['access_token']
+    auth_header = f'Bearer {access_token}'
+    header = {'Authorization': auth_header}
+    return header
+
+try:
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, IMPORT_FILE)
+except ValueError:
+    logging.error('Failed to parse file input')
+        
+try:
+    header = get_bearer_token(LEANIX_AUTH_URL, LEANIX_API_TOKEN)
+except Exception as e:
+    logging.error(f'Error while authenticating: {e}')
+
+
+with open(filename) as df:
+    try:
+        logging.info(f'Parsing csv file: {df.name}')
+        reader = csv.DictReader(df, delimiter=';')
+    except Exception as e:
+        logging.error(f'Failed to load csv file: {e}')
+
+    data = [row for row in reader]
+
+    schema_name = data[0]["measurement"]
+
+    keys = [] 
+    for row in data:
+        keys.append(row["key"])
+
+    keys = [key for key in keys (dict.fromkeys(keys))]
+    attributes = [{"name": key, "type": "metric"} for key in keys] + [{"name": "factSheetId", "type": "dimension"}]
+
+    schema = {
+      "name": schema_name,
+      "description": "Daily costs for cloud resources.",
+      "attributes": attributes
     }
-  response = requests.post(url=f"{request_url}/schemas/{schema_uuid}/points", headers=header, json=data)
+    response = requests.post(url=f"{LEANIX_REQUEST_URL}/schemas", headers=header, json=schema, timeout=TIMEOUT)
+    schema_uuid = response.json()["uuid"]
 
-  response.raise_for_status()
-  print(response.json())
+    for row in data:
+      data = {
+          "timestamp": row['date'].strftime('%Y-%m-%d') + "T00:00:00.000Z",
+          "factSheetId": row["factSheetId"],
+          row['key']: row['value']
+        }
+      response = requests.post(url=f"{LEANIX_REQUEST_URL}/schemas/{schema_uuid}/points", headers=header, json=data, timeout=TIMEOUT)
 
-
-
+      response.raise_for_status()
+      logging.info(response.json())

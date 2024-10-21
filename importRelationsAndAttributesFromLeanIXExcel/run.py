@@ -4,6 +4,7 @@ import time
 import pandas as pd
 import os
 import numpy as np
+import logging
 
 
 
@@ -11,18 +12,26 @@ non_match_records = []
 
 with open('configs.json', 'r') as infile:
     configs = json.load(infile)
-    api_token = configs['api_token']
     date_fields = configs['date_fields']
-    domain = configs['domain']
-    region = configs['region']
 
-auth_url = "https:/{region}.leanix.net/services/mtm/v1/oauth2/token"
-request_base = 'https://{domain}/'
+#Request timeout
+TIMEOUT = 20
+
+#API token and subdomain set as env variables
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
+
+IMPORT_FILE = os.getenv('IMPORT_FILE')
+
+api_token = LEANIX_API_TOKEN
+auth_url = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
+request_base = f'https://{LEANIX_SUBDOMAIN}.leanix.net/'
 
 
 
 response = requests.post(
-    auth_url, auth=("apitoken", api_token), data={"grant_type": "client_credentials"}
+    auth_url, auth=("apitoken", api_token), data={"grant_type": "client_credentials"},
+    timeout=TIMEOUT
 )
 
 response.raise_for_status()
@@ -36,7 +45,7 @@ header = {"Authorization": auth_header, "Content-Type": "application/json"}
 def call_post(request_url, data=False):
     
     response = requests.post(
-        url=request_url, headers=header, data=json.dumps(data)
+        url=request_url, headers=header, data=json.dumps(data), timeout=TIMEOUT
     )
     try:
         response.raise_for_status()
@@ -48,7 +57,7 @@ def call_post(request_url, data=False):
 def call_put(request_url, data=False):
     
     response = requests.put(
-        url=request_url, headers=header, data=json.dumps(data)
+        url=request_url, headers=header, data=json.dumps(data), timeout=TIMEOUT
     )
     try:
         response.raise_for_status()
@@ -58,7 +67,7 @@ def call_put(request_url, data=False):
 
 def call_delete(request_url):
     response = requests.delete(
-        url=request_url, headers=header)
+        url=request_url, headers=header, timeout=TIMEOUT)
     try:
         response.raise_for_status()
         return json.loads(response.text)
@@ -68,7 +77,7 @@ def call_delete(request_url):
 
 
 def call_get(request_url, endpoint):
-    response = requests.get(url=request_url + endpoint, headers=header)
+    response = requests.get(url=request_url + endpoint, headers=header, timeout=TIMEOUT)
     response.raise_for_status()
     return response
 
@@ -90,11 +99,11 @@ def start_run(run_id):
 
 
 def check_run_status(run_id, status_response=None):
-    print("checking status")
+    logging.info("checking status")
     status_endpoint = request_base + "services/integration-api/v1/synchronizationRuns/%s/status" % (run_id)
     status_response = call_get(status_endpoint)
     status_response = json.loads(status_response.text)["status"]
-    print(status_response)
+    logging.info(status_response)
     if status_response != "FINISHED":
         time.sleep(5)
         return check_run_status(run_id, status_response)
@@ -172,7 +181,7 @@ def format_entry_relations(fs_record):
                 entry['data']['targetId'] = display_name_id_map[display_name]
             except KeyError:
                 entry['data']['targetId'] = ''
-                print('match not found for ' + display_name)
+                logging.info('match not found for ' + display_name)
                 non_match_records.append({'type': relation_type.split('relProjectTo')[1], 'name': display_name})
         entry['data']['targetDisplayName'] = display_name
         entries.append(entry)
