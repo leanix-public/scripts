@@ -11,8 +11,6 @@ LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2
 request_url = f"https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/graphql" 
 TIMEOUT = 20
 
-USER_GROUP_ID = "2d570bfb-1569-41f2-9037-8897adb94469"
-
 
 def get_bearer_token(auth_url, api_token):
     """Function to retrieve the bearer token for authentication
