@@ -1,0 +1,4 @@
+type,id,name,url
+Type1,1,Name1,http://example.com/1
+Type2,2,Name2,http://example.com/2
+Type3,3,Name3,http://example.com/3
