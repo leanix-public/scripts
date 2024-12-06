@@ -1,10 +1,11 @@
 import requests
 import json
 import re
+import os
 
 
-LEANIX_API_TOKEN = "Placeholder"
-LEANIX_SUBDOMAIN = "demo-eu-1"
+LEANIX_API_TOKEN = os.getenv('LEANIX_API_TOKEN')
+LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 
 LEANIX_BASE_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net' 
 LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
