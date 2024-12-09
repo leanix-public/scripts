@@ -5,7 +5,7 @@ This script allows the user to import ServiceNow ids and set them as the externa
 The necessary information is given in the import file.
 
 Example:
-    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importServiceNowExternalI.py
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python importServiceNowExternalI.py
 
 Global variables:
     TIMEOUT (int): Timeout for requests.
@@ -36,7 +36,6 @@ LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net'
 SERVICENOW_URL = os.getenv('SERVICENOW_URL')
 
-IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 # Define Global variables here
 # Required Global Variable : apiToken

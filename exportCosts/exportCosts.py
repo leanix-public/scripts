@@ -12,7 +12,6 @@ Global variables:
     LEANIX_SUBDOMAIN (str): LeanIX subdomain.
     LEANIX_AUTH_URL (str): URL to authenticate against.
     LEANIX_REQUEST_URL (str): URL to send graphql requests to.
-    IMPORT_FILE (str): Name of the import file.
 
 """
 

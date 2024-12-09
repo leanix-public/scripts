@@ -5,7 +5,7 @@ This script allows the user to change the owner of a bookmark.
 Changes are indicated in a given input file.
 
 Example:
-    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python changeBookmarkOwner.py
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python changeBookmarkOwner.py
 
 Global variables:
     TIMEOUT (int): Timeout for requests.
@@ -13,7 +13,6 @@ Global variables:
     LEANIX_SUBDOMAIN (str): LeanIX subdomain.
     LEANIX_AUTH_URL (str): URL to authenticate against.
     LEANIX_REQUEST_URL (str): URL to send graphql requests to.
-    IMPORT_FILE (str): Name of the import file.
 
 """
 
@@ -36,7 +35,6 @@ LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
 LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/bookmarks'
 
-IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 # this file updates the owner to the support user to be able to update write-restricted bookmarks too and saves the old owner
 

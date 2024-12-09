@@ -5,7 +5,7 @@ This script allows the user to create a new Dashboard.
 The data of this dashboard is given in the import file.
 
 Example:
-    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python createDashboard.py
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python createDashboard.py
 
 Global variables:
     TIMEOUT (int): Timeout for requests.
@@ -13,7 +13,6 @@ Global variables:
     LEANIX_SUBDOMAIN (str): LeanIX subdomain.
     LEANIX_AUTH_URL (str): URL to authenticate against.
     LEANIX_REQUEST_URL (str): URL to send graphql requests to.
-    IMPORT_FILE (str): Name of the import file.
 
 """
 
@@ -35,8 +34,6 @@ LEANIX_SUBDOMAIN = os.getenv('LEANIX_SUBDOMAIN')
 
 LEANIX_AUTH_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/mtm/v1/oauth2/token' 
 LEANIX_REQUEST_URL = f'https://{LEANIX_SUBDOMAIN}.leanix.net/services/pathfinder/v1/bookmarks'
-
-IMPORT_FILE = os.getenv('IMPORT_FILE')
 
 
 #LOGIC

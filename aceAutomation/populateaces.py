@@ -5,7 +5,7 @@ This script allows the user to automatie the ace population on viable factsheets
 set based on present relations to user groups.
 
 Example:
-    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python populateaces.py
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python populateaces.py
 
 Global variables:
     TIMEOUT (int): Timeout for requests.
