@@ -5,7 +5,7 @@ This script lets you modify attributes on a relation.
 Before using this script you will need the following information:
 - API-Token
 - The instance of your workspace
-- input file
+- Input file or the name of your input file
 
 Run the script with the following command:  
 ```bash

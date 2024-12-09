@@ -1,3 +1,22 @@
+# -*- coding: utf-8 -*-
+"""Script for populating the aces on a factsheet based on set relations to user groups.
+
+This script allows the user to automatie the ace population on viable factsheets. The aces are
+set based on present relations to user groups.
+
+Example:
+    $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python populateaces.py
+
+Global variables:
+    TIMEOUT (int): Timeout for requests.
+    LEANIX_API_TOKEN (str): API-Token to authenticate with.
+    LEANIX_SUBDOMAIN (str): LeanIX subdomain.
+    LEANIX_BASE_URL (str): The base of every url.
+    LEANIX_AUTH_URL (str): URL to authenticate against.
+    request_url (str): URL to send graphql requests to.
+
+"""
+
 import requests
 import json
 import re
