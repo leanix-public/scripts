@@ -137,7 +137,8 @@ def updateDocument(id,url, header):
 # Start of the main program
 
 try:
-  ids = getIds()
+  header = get_bearer_token(LEANIX_AUTH_URL, LEANIX_API_TOKEN)
+  ids = getIds(header)
   for id, url in ids.items():
     updateDocument(id, url[1:])
 except Exception as e:
