@@ -17,6 +17,8 @@ Before you start, do the following:
 1. Enable Virtual Workspaces in your Workspace.
 2. Create ACEs based on the names of the User Groups that are to be used for ACEs.
 3. Set all relevant relations that should indicate the need for an ACE.
+4. Set up Python with the following libraries: 
+    - `pip install requests`
 
 ## Run the Script
 
