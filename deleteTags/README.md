@@ -1,14 +1,30 @@
-deleteTags script
+# Delete Tags Script
 
-This script lets you delete every document from your workspace.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
+The deleteTags script allows the user to mass delete Tags based on their id. The Tags are specified in the input file Book1.csv.
 
-Run the script with the following command:  
+The script then deletes the Tags utilizing GraphQL queries.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace for the deletion of multiple Tags.
+2. Set up the input file. An example can be found in Book1.csv.
+3. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
 LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python deleteTag.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)
+- [SAP LeanIX FactSheet Tags](https://docs-eam.leanix.net/docs/tags)

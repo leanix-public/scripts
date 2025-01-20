@@ -1,14 +1,28 @@
-exportCosts script
+# Export Costs Script
 
-This script lets you export the costs to a csv file.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
+The exportCosts script allows the user to mass export the costs of every Application to ITComponent Relation currently active in the workspace.
 
-Run the script with the following command:  
+The results are retrieved with GraphQL queries and are stored inside results.csv.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace and populate each Relation with correct costs.
+2. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
 LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python exportCosts.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)

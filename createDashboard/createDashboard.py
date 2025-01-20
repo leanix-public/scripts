@@ -2,7 +2,7 @@
 """Script for creating dashboards.
 
 This script allows the user to create a new Dashboard.
-The data of this dashboard is given in the import file.
+The data of this dashboard is given in the import file input.csv.
 
 Example:
     $ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python createDashboard.py

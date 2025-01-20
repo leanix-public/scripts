@@ -1,15 +1,31 @@
-importCosts script
+# Import Costs Script
 
-This script lets you import Costs.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
-- input file
+The importCosts script allows you to mass import costs based on a given input file.
 
-Run the script with the following command:  
+In the current state, the script creates new FactSheets based on the names given in the input file and then creates a relation between them with the given cost.
+
+To achieve this, the script uses GraphQL queries to perform every necessary mutation.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace.
+3. Prepare the input file based on the example in Book1.csv
+2. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
 LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importCosts.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)

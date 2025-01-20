@@ -1,4 +1,4 @@
-# Welcome to the LeanIX Scripts Hub
+# Welcome to the SAP LeanIX Scripts Hub
 
 ## Overview
 

@@ -1,15 +1,28 @@
-importConstrainingRelations script
+# Import Constraining Relations Script
 
-This script lets you import constraining relations.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
-- The factsheet type, the relationship and the constraining relationship
+The importConstrainingRelations script allows you to import constraining relations based on the given input file.
 
-Run the script with the following command:  
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace.
+3. Prepare the input file based on the example in Book2.csv
+2. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
 LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importConstrainingRelations.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)
+- [SAP LeanIX Constraining Relations](https://docs-eam.leanix.net/docs/adding-and-editing-data-in-fact-sheets)

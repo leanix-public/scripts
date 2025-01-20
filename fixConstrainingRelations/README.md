@@ -1,15 +1,27 @@
-fixConstrainingRelations script
+# Fix Constraining Relations Script
 
-This script lets you fix constraining relations.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
-- The factsheet type, the relationship and the constraining relationship
+The fixConstrainingRelations script allows you to fix constraining relations with the given inputs.
 
-Run the script with the following command:  
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace.
+2. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
-python3 fixConstrainingRelations.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> FACTSHEET_TYPE=<> RELATIONSHIP=<> CONSTRAINING_RELATIONSHIP=<> python fixConstrainingRelations.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)
+- [SAP LeanIX Constraining Relations](https://docs-eam.leanix.net/docs/adding-and-editing-data-in-fact-sheets)

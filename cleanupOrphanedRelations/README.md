@@ -1,15 +1,27 @@
-cleanupOrphanedRelations script
+# Cleanup Orphaned Relations Script
 
-This script lets you cleanup orphaned relations.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
-- Your input file (either xlsx or csv)
+The cleanupOrphanedRelations script allows the user to cleanup orphaned relations throughout the entire workspace.
 
-Run the script with the following command:  
+To achieve this, the script utilizes GraphQL queries to both read and write information in the workspace.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
-python3 cleanupOrphanedRelations.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python cleanupOrphanedRelations.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)

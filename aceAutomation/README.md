@@ -1,6 +1,4 @@
-# Script Name
-
-Populate ACEs
+# Populate ACEs Script
 
 ## Overview
 

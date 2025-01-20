@@ -1,15 +1,28 @@
-archiveFactSheets script
+# Archive FactSheets Script
 
-This script lets you archive factsheets from either a csv or a xlsx file.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
-- Your input file (either xlsx or csv)
+The archiveFactSheets script allows you to mass delete FactSheets in your workspace. The input file provides all IDs of the FactSheets that are to be deleted.
 
-Run the script with the following command:  
+The script uses GraphQL queries to delete the FactSheets.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Create a list of the IDs of the FactSheets you want to delete and provide them in a csv or xlsx file. An example can be found in Book1.csv.
+2. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
 LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python archiveFactsheets.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)

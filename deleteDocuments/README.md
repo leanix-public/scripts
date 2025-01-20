@@ -1,14 +1,29 @@
-deleteDocuments script
+# Delete Documents Script
 
-This script lets you delete every document from every ITComponent from your workspace.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
+The deleteDocuments script in the current state allows the user to delete all existing documents from ITComponent FactSheets.
 
-Run the script with the following command:  
+This behaviour can easily be altered to fit your use case by changing the GraphQL query in the script.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace for the creation of multiple documents.
+2. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
-python3 deleteDocuments.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python deleteDocuments.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)
+- [SAP LeanIX FactSheet Resources](https://docs-eam.leanix.net/reference/manage-documents-for-a-fact-sheet)
