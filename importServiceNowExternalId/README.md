@@ -11,7 +11,7 @@ To achieve this, the script utilizes GraphQL queries to fill in the External IDs
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Prepare the input file based on the example in ServiceNow.csv
+2. Prepare the input file based on the example in *ServiceNow.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

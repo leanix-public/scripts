@@ -13,7 +13,7 @@ To achieve this, the script uses GraphQL queries to perform every necessary muta
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Prepare the input file based on the example in Book1.csv
+2. Prepare the input file based on the example in *Book1.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

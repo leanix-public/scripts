@@ -2,7 +2,7 @@
 
 ## Overview
 
-The createDocuments script allows the user to create multiple documents based on the input file URLS.csv.
+The createDocuments script allows the user to create multiple documents based on the input file *URLS.csv*.
 
 The script creates documents for separate documents for the FactSheets specified in this file.
 
@@ -12,7 +12,7 @@ To achieve this, the script uses GraphQL queries to create said documents.
 
 Before you start, do the following:
 
-1. Put together the input file based on the example given in URLS.csv.
+1. Put together the input file based on the example given in *URLS.csv*.
 2. Prepare your workspace for the creation of multiple documents.
 3. Set up Python with the following libraries: 
     - `pip install requests`

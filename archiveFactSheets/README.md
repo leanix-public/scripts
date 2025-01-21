@@ -4,13 +4,13 @@
 
 The archiveFactSheets script allows you to mass delete FactSheets in your workspace. The input file provides all IDs of the FactSheets that are to be deleted.
 
-The script uses GraphQL queries to delete the FactSheets.
+The script uses GraphQL queries to archive the FactSheets.
 
 ## Prerequisites
 
 Before you start, do the following:
 
-1. Create a list of the IDs of the FactSheets you want to delete and provide them in a csv or xlsx file. An example can be found in Book1.csv.
+1. Create a list of the IDs of the FactSheets you want to delete and provide them in a csv or xlsx file. An example can be found in *Book1.csv*.
 2. Set up Python with the following libraries: 
     - `pip install requests`
 

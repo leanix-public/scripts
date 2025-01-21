@@ -2,7 +2,7 @@
 
 ## Overview
 
-The unarchiveFactSheets script allows the user to mass unarchive FactSheets. The FactSheets themselves are specified in Book1.csv.
+The unarchiveFactSheets script allows the user to mass unarchive FactSheets. The FactSheets themselves are specified in *Book1.csv*.
 
 To achieve this, the script uses GraphQL queries to set the status of the FactSheets.
 
@@ -11,7 +11,7 @@ To achieve this, the script uses GraphQL queries to set the status of the FactSh
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Set up the input file with the correct IDs. An example can be found in Book1.csv.
+2. Set up the input file with the correct IDs. An example can be found in *Book1.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

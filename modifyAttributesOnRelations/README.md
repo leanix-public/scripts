@@ -2,11 +2,11 @@
 
 ## Overview
 
-The importRelations script allows the user to change attributes on certain relations. The data is provided in the import.csv file.
+The importRelations script allows the user to change attributes on certain relations. The data is provided in the *import.csv* file.
 
 The exportRelationship script allows the user to export all relations and specific attributes in these relations. To read different attributes, please refer to the query used in `getRelationVariablesToExport`.
 
-The results of the export is stored in Info.csv.
+The results of the export is stored in *Info.csv*.
 
 To achieve this behavior, the script uses GraphQL queries to both read and write data.
 
@@ -15,7 +15,7 @@ To achieve this behavior, the script uses GraphQL queries to both read and write
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Prepare the input file based on the example in import.csv.
+2. Prepare the input file based on the example in *import.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

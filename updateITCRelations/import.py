@@ -155,7 +155,6 @@ def deleteExistingRelations(header):
     itcId = itcNode['node']['id']
     mapping = []
     for relationNode in itcNode['node']['relToRequiredBy']['edges']:
-      relation = relationNode['node']
       refItcId = relationNode['node']['id']
       mapping.append(refItcId)
     deleteRelations(itcId, mapping)  

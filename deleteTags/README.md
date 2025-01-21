@@ -2,7 +2,7 @@
 
 ## Overview
 
-The deleteTags script allows the user to mass delete Tags based on their id. The Tags are specified in the input file Book1.csv.
+The deleteTags script allows the user to mass delete Tags based on their id. The Tags are specified in the input file *Book1.csv*.
 
 The script then deletes the Tags utilizing GraphQL queries.
 
@@ -11,7 +11,7 @@ The script then deletes the Tags utilizing GraphQL queries.
 Before you start, do the following:
 
 1. Prepare your workspace for the deletion of multiple Tags.
-2. Set up the input file. An example can be found in Book1.csv.
+2. Set up the input file. An example can be found in *Book1.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

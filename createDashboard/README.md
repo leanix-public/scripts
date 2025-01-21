@@ -2,7 +2,7 @@
 
 ## Overview
 
-The createDashboard script allows the user to create a dashboard based on the parameters in the given file input.csv.
+The createDashboard script allows the user to create a dashboard based on the parameters in the given file *input.csv*.
 
 The script utilizes REST APIs and GraphQL queries to read data, write data and create new dashboards.
 

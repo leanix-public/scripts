@@ -4,7 +4,7 @@
 
 The updateITCRelations script allows the user to import multiple ITComponent to Technology Stack (Tech Categories) relations.
 
-The relations to be imported are specified in the Book1.csv file. 
+The relations to be imported are specified in the *Book1.csv* file. 
 
 To achieve this, the script uses GraphQl queries to both read and write data in the workspace.
 
@@ -13,7 +13,7 @@ To achieve this, the script uses GraphQl queries to both read and write data in 
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Prepare your input and provide the correct IDs. An example can be found in the Book1.csv file.
+2. Prepare your input and provide the correct IDs. An example can be found in the *Book1.csv* file.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

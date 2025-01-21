@@ -4,7 +4,7 @@
 
 The exportCosts script allows the user to mass export the costs of every Application to ITComponent Relation currently active in the workspace.
 
-The results are retrieved with GraphQL queries and are stored inside results.csv.
+The results are retrieved with GraphQL queries and are stored inside *results.csv*.
 
 ## Prerequisites
 
