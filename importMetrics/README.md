@@ -11,8 +11,8 @@ The script uses REST APIs to create new metrics.
 Before you start, do the following:
 
 1. Prepare your workspace.
-3. Prepare the input file based on the example in Book1.csv.
-2. Set up Python with the following libraries: 
+2. Prepare the input file based on the example in Book1.csv.
+3. Set up Python with the following libraries: 
     - `pip install requests`
 
 ## Run the Script

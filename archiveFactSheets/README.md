@@ -26,3 +26,4 @@ LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your i
 
 - [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
 - [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)
+- [SAP LeanIX Developer Docs](https://docs-eam.leanix.net/docs/archive-delete-and-recover-a-fact-sheet)

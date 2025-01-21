@@ -1,15 +1,33 @@
-setQualitySeals script
+# Set Quality Seals Script
 
-This script lets you either set all quality seals or break all quality seals of a certain factsheet type.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
+The breakQualitySeal script allows the user to break all quality seals of FactSheets of a given type. To achieve this, the script changes a field calles alias. This ideally would be changed to a separate field only used for this purpose.
 
-Run the script with the following command:  
+The setAllQualitySeals script allows the user to set all Quality Seals for a FactSheet type specified in the used query.
+
+To achieve all this, the script uses GraphQL queries to both read and write data in the workspace.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace.
+2. Determine the correct FactSheet types.
+3. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use either of the following commands:
+
 ```bash
-python3 breakQualitySeal.py
-python3 setAllQualitySeals.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> FACTSHEET_TYPE=<> python breakQualitySeal.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python setAllQualitySeals.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)
+- [SAP LeanIX Quality Seal](https://docs-eam.leanix.net/docs/quality-seal)

@@ -115,7 +115,7 @@ def getIds(header):
   return ids
 
 # Delete the document
-def updateDocument(id,url, header):
+def updateDocument(id, url, header):
   """Delete the given document.
 
   Args:

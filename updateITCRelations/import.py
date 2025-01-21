@@ -111,7 +111,7 @@ def deleteRelations(id, relations):
 
 # Function to create a relation between Application and IT Component with the costs attribute
 def updateRelations(itc, patches, header) :
-  """Function to create a relation between an application and an it component with the given cost attribute.
+  """Function to create a relation between a technology stack and an it component.
 
   Args:
       itc (str): ID of the it component.
@@ -138,16 +138,16 @@ def deleteExistingRelations(header):
       header (dict): Authorization header.
   """  
   query = """
-{
-  allFactSheets(filter: {facetFilters: [{facetKey: "FactSheetTypes", keys: ["ITComponent"]}, {facetKey: "relITComponentToTechnologyStack", keys: ["27c1158c-6ea6-4ab3-90e6-fe16dafa8e42"]}]}) {
-    edges {
-      node {
-        id
-        ... on ITComponent {relToRequiredBy {edges {node {id factSheet {id}}}}}
+    {
+      allFactSheets(filter: {facetFilters: [{facetKey: "FactSheetTypes", keys: ["ITComponent"]}, {facetKey: "relITComponentToTechnologyStack", keys: ["27c1158c-6ea6-4ab3-90e6-fe16dafa8e42"]}]}) {
+        edges {
+          node {
+            id
+            ... on ITComponent {relToRequiredBy {edges {node {id factSheet {id}}}}}
+          }
+        }
       }
     }
-  }
-}
 
   """
   response = call(query, header, LEANIX_REQUEST_URL)

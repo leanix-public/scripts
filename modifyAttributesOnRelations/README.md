@@ -1,42 +1,31 @@
-modifyAttributesOnRelations script
-
-This script lets you modify attributes on a relation.  
-
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
-- Input file or the name of your input file
-
-Run the script with the following command:  
-```bash
-LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python exportRelationship.py
-LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importRelations.py
-```
-
-After running the script, follow the instructions on screen
-# Import ServiceNow ExternalID Script
+# Modify Attributes on Relations Script
 
 ## Overview
 
-The importServiceNowExternalID allows the user to mass import ServiceNow IDs as external IDs for a specified FactSheet. The changes are given in an input file.
+The importRelations script allows the user to change attributes on certain relations. The data is provided in the import.csv file.
 
-To achieve this, the script utilizes GraphQL queries to fill in the External IDs.
+The exportRelationship script allows the user to export all relations and specific attributes in these relations. To read different attributes, please refer to the query used in `getRelationVariablesToExport`.
+
+The results of the export is stored in Info.csv.
+
+To achieve this behavior, the script uses GraphQL queries to both read and write data.
 
 ## Prerequisites
 
 Before you start, do the following:
 
 1. Prepare your workspace.
-3. Prepare the input file based on the example in ServiceNow.csv
-2. Set up Python with the following libraries: 
+2. Prepare the input file based on the example in import.csv.
+3. Set up Python with the following libraries: 
     - `pip install requests`
 
 ## Run the Script
 
-To run the script, use the following command:
+To run the script, use either of the following commands:
 
 ```bash
-LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python importServiceNowExternalI.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> python exportRelationship.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> IMPORT_FILE=<your input file> python importRelations.py
 ```
 
 ## Related Resources

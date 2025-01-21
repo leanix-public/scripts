@@ -1,15 +1,29 @@
-setExternalIds script
+# Set External IDs Script
 
-This script lets you set the external ids under a specified path.  
+## Overview
 
-Before using this script you will need the following information:
-- API-Token
-- The instance of your workspace
-- Path to the external id
+The setExternalIds script allows the user to write the External ID of a FactSheet under a given path. 
 
-Run the script with the following command:  
+To achieve this, the script uses GraphQL queries to write the data.
+
+## Prerequisites
+
+Before you start, do the following:
+
+1. Prepare your workspace.
+2. Prepare the input data and provide the FactSheet ID, the path of the field that is to be mutated and the value itself.
+3. Set up Python with the following libraries: 
+    - `pip install requests`
+
+## Run the Script
+
+To run the script, use the following command:
+
 ```bash
-python3 setExternalIds.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> FACTSHEET_ID=<> PATH=<> EXTERNAL_ID=<> python setExternalIds.py
 ```
 
-After running the script, follow the instructions on screen
+## Related Resources
+
+- [GraphQL API](https://docs-eam.leanix.net/reference/graphql-tutorials)
+- [Rest APIs](https://docs-eam.leanix.net/reference/rest-apis)
