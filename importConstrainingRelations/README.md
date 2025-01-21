@@ -9,7 +9,7 @@ The importConstrainingRelations script allows you to import constraining relatio
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Prepare the input file based on the example in Book2.csv
+2. Prepare the input file based on the example in *Book2.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 
