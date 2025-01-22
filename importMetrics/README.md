@@ -11,7 +11,7 @@ The script uses REST APIs to create new metrics.
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Prepare the input file based on the example in *Book1.csv*.
+2. Prepare the input file based on the example in *Book1.csv* and the [documentation](https://docs-eam.leanix.net/docs/metrics).
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

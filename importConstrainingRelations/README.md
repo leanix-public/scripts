@@ -2,7 +2,9 @@
 
 ## Overview
 
-The importConstrainingRelations script allows you to import constraining relations based on the given input file.
+The importConstrainingRelations script allows you to import constraining relations from Applications to Business Capabilities based on the given input file.
+
+As an input, you have to provide the IDs of the Application, the Business Capability and the constraining User Group.
 
 ## Prerequisites
 

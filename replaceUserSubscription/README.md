@@ -22,7 +22,7 @@ Before you start, do the following:
 To run the script, use the following command:
 
 ```bash
-LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> NEW_USER=<> OLD_USER=<> python replaceUserSubscription.py
+LEANIX_API_TOKEN=<your token> LEANIX_SUBDOMAIN=<your domain> NEW_USER=<address of new user> OLD_USER=<address of old user> python replaceUserSubscription.py
 ```
 
 ## Related Resources

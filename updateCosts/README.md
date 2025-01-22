@@ -4,7 +4,7 @@
 
 The updateCosts script allows the user to make multiple changes to costs set on relations from Applications to ITComponents.
 
-The changes to be made are specified in the *Book1.csv* file.
+The changes to be made are specified in the *Book1.csv* file. You have to provide the IDs of the FactSheets that are related and the new cost values.
 
 To achieve this, the script uses GraphQL queries to write the data to the workspace.
 
@@ -13,7 +13,7 @@ To achieve this, the script uses GraphQL queries to write the data to the worksp
 Before you start, do the following:
 
 1. Prepare your workspace.
-2. Set up the input file with the correct IDs and values. An example can be found in *Book1.csv*.
+2. Set up the input file with the correct FactSheet IDs and values. An example can be found in *Book1.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
 

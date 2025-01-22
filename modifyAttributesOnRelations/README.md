@@ -2,7 +2,7 @@
 
 ## Overview
 
-The importRelations script allows the user to change attributes on certain relations. The data is provided in the *import.csv* file.
+The importRelations script allows the user to change attributes, in this case the Technical Suitability, on certain relations. The data is provided in the *import.csv* file. The attribute that is written can be easily change in the script itself.
 
 The exportRelationship script allows the user to export all relations and specific attributes in these relations. To read different attributes, please refer to the query used in `getRelationVariablesToExport`.
 

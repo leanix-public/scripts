@@ -2,9 +2,11 @@
 
 ## Overview
 
-The importServiceNowExternalID script allows the user to mass import ServiceNow IDs as external IDs for a specified FactSheet. The changes are given in an input file.
+The importServiceNowExternalID script allows the user to mass import ServiceNow IDs as external IDs for specified FactSheets. The changes to be made are given in an input file.
 
-To achieve this, the script utilizes GraphQL queries to fill in the External IDs.
+The external ID is stored in the *serviceNowExternalId* field on a FactSheet.
+
+To achieve this, the script utilizes GraphQL queries to fill in the external IDs.
 
 ## Prerequisites
 
