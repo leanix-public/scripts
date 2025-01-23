@@ -2,7 +2,7 @@
 
 ## Overview
 
-The breakQualitySeal script allows the user to break all quality seals of FactSheets of a given type. To achieve this, the script changes a field calles alias. This ideally would be changed to a separate field only used for this purpose.
+The breakQualitySeal script allows the user to break all quality seals of FactSheets of a given type. To achieve this, the script changes a field named *alias*. This ideally would be changed to a separate field only used for this purpose.
 
 The setAllQualitySeals script allows the user to set all Quality Seals for a FactSheet type specified in the used query.
 

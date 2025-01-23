@@ -4,7 +4,7 @@
 
 The updateDocuments script allows the user to update Documents present on certain FactSheets on a larger scale.
 
-In the curren state, the script only updates the URLs set on the Documents, but this can easily be changed to fit your needs.
+In the current state, the script only updates the URLs set on the Documents, but this can easily be changed to fit your needs.
 
 To achieve this, the script uses GraphQL queries to write data to the workspace.
 

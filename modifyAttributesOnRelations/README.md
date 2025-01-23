@@ -6,9 +6,9 @@ The importRelations script allows the user to change attributes, in this case th
 
 The exportRelationship script allows the user to export all relations and specific attributes in these relations. To read different attributes, please refer to the query used in `getRelationVariablesToExport`.
 
-The results of the export is stored in *Info.csv*.
+The results of the export are stored in *Info.csv*.
 
-To achieve this behavior, the script uses GraphQL queries to both read and write data.
+To achieve this behaviour, the script uses GraphQL queries to both read and write data.
 
 ## Prerequisites
 

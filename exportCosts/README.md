@@ -10,7 +10,7 @@ The results are retrieved with GraphQL queries and are stored inside *results.cs
 
 Before you start, do the following:
 
-1. Prepare your workspace and populate each Relation with correct costs.
+1. Prepare your workspace and populate each Relation with the correct costs.
 2. Set up Python with the following libraries: 
     - `pip install requests`
 

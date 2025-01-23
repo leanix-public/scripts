@@ -2,7 +2,7 @@
 
 ## Overview
 
-The replaceUserSubscriptions allows the user to replace the ownership of subscription. The subscriptions are identified with the users E-Mail address.
+The replaceUserSubscriptions allows the user to replace the ownership of subscriptions. The subscriptions are identified with the user's E-Mail address.
 
 You have to provide the E-Mail address of the old user and the one of the new user.
 

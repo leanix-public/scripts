@@ -10,7 +10,7 @@ The script uses REST APIs to change the owners based on the given input file.
 
 Before you start, do the following:
 
-1. Create a list of the IDs of the Bookmarks and its new owners under the name *bookmarkUpdates.csv*. An example can be found in the given *bookmarkUpdates.csv*.
+1. Create a list of the IDs of the Bookmarks and their new owners under the name *bookmarkUpdates.csv*. An example can be found in the given *bookmarkUpdates.csv*.
 2. Set up Python with the following libraries: 
     - `pip install requests`
 

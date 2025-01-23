@@ -2,9 +2,9 @@
 
 ## Overview
 
-The populateaces script enables you to automate the assignment of ACEs to FactSheets. Based on set relations to UserGroup FactSheets, an ACE is set on Application, ITComponent and Project FactSheets.
+The populateaces script enables you to automate the assignment of ACEs to FactSheets. Based on set relations to UserGroup FactSheets, an ACE is set on Application, ITComponent, and Project FactSheets.
 
-For now, the script assigns both read and write ACEs on the same basis, however this behaviour can easily be changed in the script itself.
+For now, the script assigns both read and write ACEs on the same basis. However, this behaviour can easily be changed in the script itself.
 
 This script utilizes REST APIs and GraphQL to create new ACEs, read data from the workspace and mutate the given FactSheets.
 
