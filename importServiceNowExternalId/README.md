@@ -16,6 +16,7 @@ Before you start, do the following:
 2. Prepare the input file based on the example in *ServiceNow.csv*.
 3. Set up Python with the following libraries: 
     - `pip install requests`
+    - `pip install click`
 
 ## Run the Script
 
