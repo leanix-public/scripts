@@ -2,18 +2,18 @@
 
 ## Overview
 
-Welcome to the LeanIX Scripts Hub. This repository contains Python scripts that allow you to optimize your workflows for [LeanIX](https://www.leanix.net/). Using these scripts, you can automate recurring tasks, reduce manual processes, and enable your team to focus on strategic goals.
+Welcome to the SAP LeanIX Scripts Hub. This repository contains Python scripts that allow you to optimize your workflows for [LeanIX](https://www.leanix.net/). Using these scripts, you can automate recurring tasks, reduce manual processes, and enable your team to focus on strategic goals.
 
 To use the scripts in this repository effectively, you should have a basic knowledge of:
 
-- Python
+- Python and its libraries
 - APIs in general and especially [SAP LeanIX APIs](https://docs-eam.leanix.net/reference/available-apis)
 - [GraphQL](https://docs-eam.leanix.net/reference/graphql-tutorials) 
 - Running and deploying scripts
 
 ## Prerequisites
 
-Most of the scripts need a few prerequisites to be used to their full extent. Every script requires an **API Token** and the **subdomain** (e.g. demo-eu-1) of the workspace your changes are to be made in. In some cases an input file is also required, which too needs to be specified beforehand.
+Most of the scripts need a few prerequisites to be used to their full extent. Every script requires an **API Token** and the **Subdomain** (e.g. demo-eu-1) of the workspace your changes are to be made in. In some cases an input file is also required, which too needs to be specified beforehand.
 
 Each of these values are generally defined through environmental variables, but for the specific syntax please refer to the separate README of each script.
 
@@ -21,15 +21,15 @@ Each of these values are generally defined through environmental variables, but 
 
 To authenticate your requests to LeanIX APIs, you need an access token. To learn how to obtain an access token, see [Authentication to LeanIX Services](https://docs-eam.leanix.net/reference/authentication-for-managing-api-tokens) in our developer documentation.
 
-To create an API token, you need to have admin access to your LeanIX workspace.
+To create an API token, you need to have admin access to your LeanIX workspace to create a Technical User.
 
 ### Prepare Your Environment
 
 Prepare your environment by installing the necessary dependencies. Follow these steps:
 
 1. Install Python.
-2. Install needed libraries for the script itself. For this information, please refer to the script specific README.
-3. Prepare your workspace and provide necessary input files.
+2. Install required libraries for the script itself. For this information, please refer to the script specific README.
+3. Prepare your SAP LeanIX workspace and provide necessary input files.
 
 ## Using Scripts
 
@@ -39,7 +39,7 @@ Depending on the script, you may want to run it on a schedule or in response to 
 
 To get started, follow these steps:
 
-1. **Set up configuration:** As mentioned, some scripts may require a configuration file or environment variables to work correctly. Make sure to fill these with your specific values. Instructions are also provided in the specific READMEs.
+1. **Set up configuration:** As mentioned, some scripts may require a configuration file or environment variables to work correctly. Make sure to fill these with your specific values. Further instructions are also provided in the script specific READMEs.
 
 2. **Run the script:** Once everything is set up, you can run the script using the commands provided in the README of the scripts.
 
