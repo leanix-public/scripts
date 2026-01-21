@@ -1,0 +1,12 @@
+# LeanIX Synchronization Items Query Script Requirements
+# Core dependencies
+httpx>=0.27.0
+openpyxl>=3.1.0
+
+# Optional but recommended for better date parsing
+python-dateutil>=2.8.0
+
+# Development/testing dependencies (optional)
+# pytest>=7.0.0
+# black>=23.0.0
+# flake8>=6.0.0
